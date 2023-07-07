@@ -1,3 +1,6 @@
+import sys
+sys.path.append('../common')
+
 import time
 from cal_cost import cal_cost
 import matplotlib.pyplot as plt
