@@ -5,10 +5,8 @@ sys.path.append(os.path.join(script_directory, '..'))
 
 import matplotlib.pyplot as plt
 from dstar_lite import DStarLite
+from common.plotting import Plotter
 from common.evaluate import Evaluate
-from common.plot_model import plot_model
-from common.plot_solution import plot_solution
-from common.plot_animation import PlotAnimation1
 from create_dstarlite_model import CreateDstarLiteModel
 
 # adj_type: 4adj or 8adj
@@ -34,8 +32,8 @@ print('turns:', eval.path_turns, ' |||  time:', dsl_obj.sol.proc_time)
 print('length:', eval.path_length, ' |||  smoothness:', eval.smoothness) 
 
 # plot
-fig, ax = plot_model(model)
-plot_solution(dsl_obj.sol, ax)
+plotter = Plotter(model)
+plotter.plot_solution(dsl_obj.sol)
 plt.show()
 
 # # animation
