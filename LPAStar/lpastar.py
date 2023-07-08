@@ -171,24 +171,6 @@ class LPAStar:
         path_nodes.reverse()
         return path_nodes
 
-        # succ = self.model.successors[self.start.node]
-        # succ_c = self.model.succ_cost[self.start.node]
-        # succ_g = np.array(self.G[succ])
-        # if self.model.expand_method == 'random':
-        #     min_ind = np.argmin(succ_c+succ_g)
-        #     self.start.node = succ[min_ind]
-        # elif self.model.expand_method == 'heading':
-        #     dtheta = self.turn_cost(succ)
-        #     c1 = succ_c+succ_g
-        #     c2 = [np.abs(dtheta), c1]
-        #     c3 = np.array(c2)
-        #     inds = np.lexsort(c3)
-        #     self.start.node = succ[inds[0]]
-        #     self.current_dir = self.current_dir + dtheta[inds[0]]
-
-        # self.start.x = self.model.nodes.x[self.start.node]
-        # self.start.y = self.model.nodes.y[self.start.node]
-
     # ------------------------------------------------------------
 
     def top_key(self):
