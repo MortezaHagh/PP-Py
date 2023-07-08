@@ -22,3 +22,9 @@ Apart from each path planning method's directory, there are other general direct
 
 - **common**: common functionalities used in all planning methods
 - ...
+
+## Dependencies
+
+- python3
+- numpy
+- matplotlib
