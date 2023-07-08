@@ -36,4 +36,4 @@ Apart from each path planning method's directory, there are other general direct
 - numpy
 - matplotlib
 
-## Simulation
+## Simulations
