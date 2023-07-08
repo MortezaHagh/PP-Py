@@ -34,9 +34,10 @@ path_smoothness = cal_smoothness(path)
 path_turns = path_smoothness/90
 
 # results
-print(path.nodes)
-print(path.dirs)
-print(path_length, path_smoothness, path_turns, path_time)
+print('nodes:', path.nodes)
+print('dirs:', path.dirs)
+print('turns:', path_turns, ' |||  time:', path_time)
+print('length:', path_length, ' |||  smoothness:', path_smoothness) 
 
 # plot
 fig, ax = plot_model(model)
