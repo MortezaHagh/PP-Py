@@ -25,8 +25,7 @@ model = CreateDstarLiteModel(setting)
 dsl_obj = DStarLite(model)
 
 # Evaluate
-eval = Evaluate()
-
+eval = Evaluate(dsl_obj.sol)
 
 # results
 print('nodes:', dsl_obj.sol.nodes)

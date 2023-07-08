@@ -9,7 +9,6 @@ class Evaluate:
         self.smoothness = self.cal_smoothness()
         self.path_turns = self.smoothness/(np.pi/2)
 
-
     def cal_cost(self):
         dxPath = np.diff(self.sol.x)
         dyPath = np.diff(self.sol.y)
