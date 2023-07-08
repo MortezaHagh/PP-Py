@@ -1,5 +1,5 @@
 import numpy as np
-from initialize import TopNode
+from support import TopNode
 from common.cal_distance import cal_distance
 
 
