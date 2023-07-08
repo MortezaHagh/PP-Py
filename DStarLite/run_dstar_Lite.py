@@ -3,14 +3,12 @@ import sys
 script_directory = os.path.dirname(os.path.abspath(sys.argv[0]))
 sys.path.append(os.path.join(script_directory, '..'))
 
-import time
 import matplotlib.pyplot as plt
 from dstar_lite import DStarLite
-from common.cal_cost import cal_cost
+from common.evaluate import Evaluate
 from common.plot_model import plot_model
 from common.plot_solution import plot_solution
 from common.plot_animation import PlotAnimation1
-from common.cal_smoothness import cal_smoothness
 from create_dstarlite_model import CreateDstarLiteModel
 
 # adj_type: 4adj or 8adj
@@ -24,22 +22,21 @@ setting = {'adj_type': '4adj',
 model = CreateDstarLiteModel(setting)
 
 # dstar lite
-dl_obj = DStarLite(model)
+dsl_obj = DStarLite(model)
 
-# cost and smoothness
-path_length = cal_cost(dl_obj.sol)
-path_smoothness = cal_smoothness(dl_obj.sol)
-path_turns = path_smoothness/90
+# Evaluate
+eval = Evaluate()
+
 
 # results
-print('nodes:', dl_obj.sol.nodes)
-print('dirs:', dl_obj.sol.dirs)
-print('turns:', path_turns, ' |||  time:', dl_obj.sol.proc_time)
-print('length:', path_length, ' |||  smoothness:', path_smoothness) 
+print('nodes:', dsl_obj.sol.nodes)
+print('dirs:', dsl_obj.sol.dirs)
+print('turns:', eval.path_turns, ' |||  time:', dsl_obj.sol.proc_time)
+print('length:', eval.path_length, ' |||  smoothness:', eval.smoothness) 
 
 # plot
 fig, ax = plot_model(model)
-plot_solution(dl_obj.sol, ax)
+plot_solution(dsl_obj.sol, ax)
 plt.show()
 
 # # animation
