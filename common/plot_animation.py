@@ -8,9 +8,9 @@ class PlotAnimation1(object):
 
     def __init__(self, fig, ax, path):
 
-        self.path = path
         self.ax = ax
         self.fig = fig
+        self.path = path
 
         self.path_len = len(path.x)
 
