@@ -30,3 +30,4 @@ class Sol(object):
         self.y = 0
         self.dirs = 0
         self.nodes = 0
+        self.proc_time = 0
