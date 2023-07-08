@@ -232,6 +232,7 @@ class DStarLite:
             dy = y2-y1
             dx = x2-x1
             theta = np.arctan2(dy, dx)
+            theta = round(theta, 3)
             dirs.append(theta)
 
         dirs.append(dirs[-1])

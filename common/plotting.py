@@ -41,7 +41,7 @@ class Plotter:
         self.ax.plot(sol.x, sol.y, 'o', markersize=4,
                      markeredgecolor='b', markerfacecolor='b')
 
-    def init_anim(self, sol):
+    def plot_anim(self, sol):
         self.sol = sol
         self.path_len = len(sol.x)
 
@@ -51,6 +51,7 @@ class Plotter:
         line[1], = self.ax.plot(sol.x[0:2], sol.y
                                 [0:2], color='green', linewidth=2)
         self.line = line
+        self.animate()
 
     def ani_init(self):  # only required for blitting to give a clean slate.
         self.line[0].set_data([], [])

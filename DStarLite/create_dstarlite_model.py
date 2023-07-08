@@ -4,8 +4,8 @@ from common.create_model_base import CreateBaseModel
 
 
 class CreateDstarLiteModel(CreateBaseModel):
-    def __init__(self, setting):
-        CreateBaseModel.__init__(self)
+    def __init__(self, setting, use_rnd=False):
+        CreateBaseModel.__init__(self, use_rnd)
         print('Create DstarLite Model from Base Model')
 
         if setting['adj_type'] == '4adj':
@@ -75,12 +75,3 @@ class CreateDstarLiteModel(CreateBaseModel):
         self.s_last = self.robot.start_node
         self.G = np.inf*np.ones(self.nodes.count)
         self.RHS = np.inf*np.ones(self.nodes.count)
-
-
-if __name__ == '__main__':
-    from plot_model import plot_model
-    setting = {'adj_type': '4adj', 'dist_type': 'manhattan',
-               'expand_method': 'heading'}
-    model = CreateDstarLiteModel(setting)
-    plot_model(model)
-    plt.show()

@@ -12,12 +12,13 @@ from create_dstarlite_model import CreateDstarLiteModel
 # adj_type: 4adj or 8adj
 # expand_method: random or heading
 # dist_type: manhattan or euclidean
-setting = {'adj_type': '4adj', 
-           'dist_type': 'manhattan',
+setting = {'adj_type': '8adj', 
+           'dist_type': 'euclidean',
            'expand_method': 'heading'}
 
 # model
-model = CreateDstarLiteModel(setting)
+use_rnd = True # False True
+model = CreateDstarLiteModel(setting, use_rnd)
 
 # dstar lite
 dsl_obj = DStarLite(model)
@@ -37,7 +38,7 @@ plotter.plot_solution(dsl_obj.sol)
 plt.show()
 
 # # animation
-# fig, ax = plot_model(model)
-# animation = PlotAnimation1(fig, ax, path)
-# animation.anim.save('results/animation1.gif', fps=4)
+# plotter = Plotter(model)
+# plotter.plot_anim(dsl_obj.sol)
+# plotter.anim.save('sim-1.gif', fps=4)
 # plt.show()
