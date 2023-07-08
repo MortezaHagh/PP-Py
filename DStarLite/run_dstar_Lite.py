@@ -17,7 +17,7 @@ setting = {'adj_type': '8adj',
            'expand_method': 'heading'}
 
 # model
-use_rnd = True # False True
+use_rnd = False # False True
 model = CreateDstarLiteModel(setting, use_rnd)
 
 # dstar lite
@@ -33,12 +33,14 @@ print('turns:', eval.path_turns, ' |||  time:', dsl_obj.sol.proc_time)
 print('length:', eval.path_length, ' |||  smoothness:', eval.smoothness) 
 
 # plot
-plotter = Plotter(model)
+plot_dyno = True # False True
+plotter = Plotter(model, plot_dyno)
 plotter.plot_solution(dsl_obj.sol)
 plt.show()
 
 # # animation
-# plotter = Plotter(model)
+# plot_dyno = False # False True
+# plotter = Plotter(model, plot_dyno)
 # plotter.plot_anim(dsl_obj.sol)
-# plotter.anim.save('sim-1.gif', fps=4)
+# plotter.anim.save('sim-5-dy.gif', fps=4)
 # plt.show()

@@ -14,7 +14,6 @@ class Evaluate:
         dyPath = np.diff(self.sol.y)
         dxPath2 = np.power(dxPath, 2)
         dyPath2 = np.power(dyPath, 2)
-        # path length
         path_length = sum(np.sqrt(np.add(dxPath2, dyPath2)))
         return path_length
 

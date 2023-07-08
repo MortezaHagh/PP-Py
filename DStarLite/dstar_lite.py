@@ -66,8 +66,8 @@ class DStarLite:
             t = t+1
             self.path_nodes.append(self.start.node)
 
-            # # check for update in edge costs (obstacles)
-            # [open, RHS, model] = update_map(open, RHS, G, model, start, t)
+            # check for update in edge costs (obstacles)
+            self.update_map(t)
 
             # compute shortest path
             self.compute_shortest_path()
@@ -96,7 +96,7 @@ class DStarLite:
             self.open.count = self.open.count - 1
 
             # update vertex
-            update_list = self.model.predecessors[self.top_node.node]
+            update_list = list(self.model.predecessors[self.top_node.node])
             if self.compare_keys(k_old, k_new):
                 self.open.list.append(self.top_node)
                 self.open.list[-1].key = k_new
@@ -176,24 +176,25 @@ class DStarLite:
                 self.open.list.append(op)
 
     def update_map(self, t):
-        if t == 2:
-            new_obst_node = 31
-            for ind, node in enumerate(self.model.predecessors[new_obst_node]):
-                self.model.pred_cost[new_obst_node][ind] = np.inf
-                suc_ind = np.where(
-                    new_obst_node == self.model.successors[node])
-                self.model.succ_cost[node][suc_ind] = np.inf
+        for i, do_t in enumerate(self.model.dynamic_obsts.t):
+            if t == do_t:
+                new_obst_node = self.model.dynamic_obsts.nodes[i]
+                for ind, node in enumerate(self.model.predecessors[new_obst_node]):
+                    self.model.pred_cost[new_obst_node][ind] = np.inf
+                    suc_ind = np.where(
+                        new_obst_node == self.model.successors[node])
+                    self.model.succ_cost[node][suc_ind] = np.inf
 
-            xl = self.model.nodes.x[self.model.s_last]
-            yl = self.model.nodes.y[self.model.s_last]
-            self.model.km = self.model.km + \
-                cal_distance(xl, yl, self.start.x,
-                             self.start.y, self.model.dist_type)
-            self.model.s_last = self.start.node
-            update_list = self.model.predecessors[new_obst_node]
+                xl = self.model.nodes.x[self.model.s_last]
+                yl = self.model.nodes.y[self.model.s_last]
+                self.model.km = self.model.km + \
+                    cal_distance(xl, yl, self.start.x,
+                                 self.start.y, self.model.dist_type)
+                self.model.s_last = self.start.node
+                update_list = self.model.predecessors[new_obst_node]
 
-            # update vertex
-            self.update_vertex(update_list)
+                # update vertex
+                self.update_vertex(update_list)
 
     # ------------------------------------------------------------
 

@@ -4,8 +4,10 @@ import matplotlib.animation as animation
 
 
 class Plotter:
-    def __init__(self, model) -> None:
+    def __init__(self, model, plot_dyno=False) -> None:
         self.model = model
+        self.plot_dyno = plot_dyno
+        self.do_color = (0.8500, 0.3250, 0.0980)
         self.fig, self.ax = plt.subplots(1, 1)
         self.ax.axis("off")
         self.ax.axis('equal')
@@ -29,6 +31,10 @@ class Plotter:
         self.ax.plot(self.model.obsts.x, self.model.obsts.y, 'o',  markersize=5,
                      markeredgecolor='k', markerfacecolor='k')
 
+        if self.plot_dyno:
+            self.ax.plot(self.model.dynamic_obsts.x, self.model.dynamic_obsts.y, 'o',  markersize=5,
+                         markeredgecolor=self.do_color, markerfacecolor=self.do_color)
+
         # Walls
         lx = self.model.map.x_max-self.model.map.x_min + 1
         ly = self.model.map.y_max-self.model.map.y_min + 1
@@ -45,17 +51,20 @@ class Plotter:
         self.sol = sol
         self.path_len = len(sol.x)
 
-        line = [0, 0]
-        line[0], = self.ax.plot(sol.x[0], sol.y[0], 'o',
-                                markerfacecolor='green', markeredgecolor='green', markersize=5)
-        line[1], = self.ax.plot(sol.x[0:2], sol.y
-                                [0:2], color='green', linewidth=2)
+        line = [0, 0, 0]
+        line[0], = self.ax.plot(
+            sol.x[0], sol.y[0], 'o', markerfacecolor='green', markeredgecolor='green', markersize=5)
+        line[1], = self.ax.plot(sol.x[0:2], sol.y[0:2],
+                                color='green', linewidth=2)
+        line[2], = self.ax.plot(-1, -1, 'o', markeredgecolor=self.do_color,
+                                markerfacecolor=self.do_color)
         self.line = line
         self.animate()
 
-    def ani_init(self):  # only required for blitting to give a clean slate.
+    def ani_init(self):
         self.line[0].set_data([], [])
         self.line[1].set_data([], [])
+        self.line[2].set_data([], [])
         return self.line
 
     def ani_update(self, i):
@@ -66,6 +75,11 @@ class Plotter:
             xx = self.sol.x[i-1:i+1]
             yy = self.sol.y[i-1:i+1]
             self.line[1].set_data(xx, yy)
+            if i in self.model.dynamic_obsts.t:
+                io = self.model.dynamic_obsts.t.index(i)
+                xo = self.model.dynamic_obsts.x[io]
+                yo = self.model.dynamic_obsts.y[io]
+                self.line[2].set_data(xo, yo)
         return self.line
 
     def animate(self):

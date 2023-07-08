@@ -90,6 +90,15 @@ class Obstacles(object):
         self.nodes = nodes
 
 
+class DynamicObsts:
+    def __init__(self, map):
+        self.t = [2, 4]
+        self.x = [3, 7]
+        self.y = [2, 2]
+        self.nodes = [(y-map.y_min)*map.nx + x -
+                      map.x_min for x, y in zip(self.x, self.y)]
+
+
 class Nodes(object):
     def __init__(self, map):
         self.count = map.nx*map.ny
@@ -114,3 +123,6 @@ class CreateBaseModel(object):
 
         # Obstacles
         self.obsts = Obstacles(map, self.nodes, self.robot, use_rnd)
+
+        # Dynamic Obstacles
+        self.dynamic_obsts = DynamicObsts(map)

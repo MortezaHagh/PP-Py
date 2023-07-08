@@ -17,7 +17,7 @@ setting = {'adj_type': '8adj',
            'expand_method': 'heading'}
 
 # model
-use_rnd = True # False True
+use_rnd = False # False True
 model = CreateLPAStarModel(setting, use_rnd)
 
 # dstar lite
