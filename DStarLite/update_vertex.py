@@ -1,6 +1,6 @@
 import numpy as np
-from distance import distance
 from initialize import TopNode
+from common.distance import distance
 
 
 def update_vertex(open, RHS, G, update_list, model, start):

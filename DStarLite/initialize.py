@@ -1,4 +1,4 @@
-from distance import distance
+from common.distance import distance
 
 
 class TopNode(object):

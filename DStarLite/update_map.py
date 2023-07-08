@@ -1,5 +1,5 @@
 import numpy as np
-from distance import distance
+from common.distance import distance
 from update_vertex import update_vertex
 
 

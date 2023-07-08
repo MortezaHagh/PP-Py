@@ -2,7 +2,7 @@ import numpy as np
 from turn_cost import turn_cost
 from initialize import initialize
 from update_map import update_map
-from node_to_dir import node_to_dir
+from common.node_to_dir import node_to_dir
 from compute_shortest_path import compute_shortest_path
 
 

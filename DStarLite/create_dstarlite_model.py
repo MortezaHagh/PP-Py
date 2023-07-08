@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from create_model_base import CreateBaseModel
+from common.create_model_base import CreateBaseModel
 
 
 class CreateDstarLiteModel(CreateBaseModel):
