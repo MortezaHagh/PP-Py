@@ -5,7 +5,7 @@ sys.path.append(os.path.join(script_directory, '..'))
 
 import time
 import matplotlib.pyplot as plt
-from dstar_lite import dstar_lite
+from dstar_lite import DStarLite
 from common.cal_cost import cal_cost
 from common.plot_model import plot_model
 from common.plot_solution import plot_solution
@@ -23,27 +23,23 @@ setting = {'adj_type': '4adj',
 # model
 model = CreateDstarLiteModel(setting)
 
-# process time
-t_start = time.process_time()
-
 # dstar lite
-[model, path] = dstar_lite(model)
-path_time = time.process_time()-t_start
+dl_obj = DStarLite(model)
 
 # cost and smoothness
-path_length = cal_cost(path)
-path_smoothness = cal_smoothness(path)
+path_length = cal_cost(dl_obj.sol)
+path_smoothness = cal_smoothness(dl_obj.sol)
 path_turns = path_smoothness/90
 
 # results
-print('nodes:', path.nodes)
-print('dirs:', path.dirs)
-print('turns:', path_turns, ' |||  time:', path_time)
+print('nodes:', dl_obj.sol.nodes)
+print('dirs:', dl_obj.sol.dirs)
+print('turns:', path_turns, ' |||  time:', dl_obj.sol.proc_time)
 print('length:', path_length, ' |||  smoothness:', path_smoothness) 
 
 # plot
 fig, ax = plot_model(model)
-plot_solution(path, ax)
+plot_solution(dl_obj.sol, ax)
 plt.show()
 
 # # animation

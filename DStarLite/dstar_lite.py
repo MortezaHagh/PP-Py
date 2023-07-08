@@ -2,7 +2,6 @@ import time
 import numpy as np
 from support import Open, Sol
 from support import Start, TopNode
-from update_map import update_map
 from common.cal_distance import cal_distance
 
 
@@ -10,13 +9,13 @@ class DStarLite:
     def __init__(self, model):
 
         # initialize
+        self.model = model
+        top_node = self.create_top_node()
         RHS = model.RHS
         RHS[top_node.node] = 0
-        top_node = self.create_top_node()
         self.open = Open(top_node)
         self.G = model.G
         self.RHS = model.RHS
-        self.model = model
 
         # start
         self.current_dir = self.model.robot.dir
@@ -24,14 +23,15 @@ class DStarLite:
         self.start = self.create_start()
 
         # start process time
+        self.end_time = 0
         start_time = time.process_time()
 
         # dstar_lite
         self.dstar_lite()
 
         # end process time
-        end_time = time.process_time()
-        self.sol.proc_time = end_time - start_time
+        self.end_time = time.process_time()
+        self.sol.proc_time = self.end_time - start_time
 
     # ------------------------------------------------------------
 
@@ -57,7 +57,7 @@ class DStarLite:
                 c3 = np.array(c2)
                 inds = np.lexsort(c3)
                 self.start.node = succ[inds[0]]
-                current_dir = current_dir + dtheta[inds[0]]
+                self.current_dir = self.current_dir + dtheta[inds[0]]
 
             self.start.x = self.model.nodes.x[self.start.node]
             self.start.y = self.model.nodes.y[self.start.node]
@@ -72,6 +72,7 @@ class DStarLite:
             # compute shortest path
             self.compute_shortest_path()
 
+        self.end_time = time.process_time()
         self.create_sol()
 
     # ------------------------------------------------------------
@@ -130,8 +131,8 @@ class DStarLite:
         y = self.model.nodes.y[self.start.node]
         x = self.model.nodes.x[self.start.node]
         for i in succ:
-            dy = self.model.model.nodes.y[i]-y
-            dx = self.model.model.nodes.x[i]-x
+            dy = self.model.nodes.y[i]-y
+            dx = self.model.nodes.x[i]-x
             theta = np.arctan2(dy, dx)
             dt = np.arctan2(np.sin(theta-self.current_dir),
                             np.cos(theta-self.current_dir))
@@ -202,23 +203,24 @@ class DStarLite:
         self.key = [min(self.G[start.node], self.RHS[start.node])]*2
         self.x = self.model.nodes.x[start.node]
         self.y = self.model.nodes.y[start.node]
-        self.start = start
+        return start
 
     def create_top_node(self):
-        top_node.ind = 0
         top_node = TopNode()
+        top_node.ind = 0
         top_node.node = self.model.robot.goal_node
         top_node.h_cost = cal_distance(self.model.robot.xs, self.model.robot.ys,
                                        self.model.robot.xt, self.model.robot.yt, self.model.dist_type)
-        top_node.key = [self.h_cost, 0]
+        top_node.key = [top_node.h_cost, 0]
+        return top_node
 
     def create_sol(self):
         sol = Sol()
         sol.nodes = self.path_nodes
         sol.x = [self.model.nodes.x[i] for i in self.path_nodes]
         sol.y = [self.model.nodes.y[i] for i in self.path_nodes]
-        sol.dirs = self.node_to_dir(self.model, self.path_nodes)
-        self.sol = Sol()
+        sol.dirs = self.node_to_dir(self.path_nodes)
+        self.sol = sol
 
     def node_to_dir(self, nodes):
         dirs = []

@@ -1,6 +1,3 @@
-from common.node_to_dir import node_to_dir
-from common.cal_distance import cal_distance
-
 
 class TopNode(object):
     def __init__(self):
@@ -17,7 +14,7 @@ class Open(object):
 
 
 class Start(object):
-    def __init__(self, model, G, RHS):
+    def __init__(self):
         self.x = 0
         self.y = 0
         self.key = 0
