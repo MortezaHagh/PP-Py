@@ -1,3 +1,4 @@
+import math
 import matplotlib.pyplot as plt
 
 
@@ -15,15 +16,13 @@ class Map(object):
 
 class Robot(object):
     def __init__(self, map):
-        self.dir = 90
         self.xs = 1
         self.ys = 1
         self.xt = 7
         self.yt = 7
-        self.start_node = (self.ys - map.y_min)*(map.nx) + \
-            self.xs-map.x_min
-        self.goal_node = (self.yt - map.y_min)*(map.nx) + \
-            self.xt-map.x_min
+        self.dir = math.pi/2
+        self.start_node = (self.ys - map.y_min)*(map.nx) + self.xs-map.x_min
+        self.goal_node = (self.yt - map.y_min)*(map.nx) + self.xt-map.x_min
 
 
 class Obstacles(object):
@@ -43,16 +42,14 @@ class Obstacles(object):
         self.y = yc2 + yc3
 
         self.count = len(self.x)
-        self.nodes = [(y-map.y_min)*map.nx + x - map.x_min
-                      for x, y in zip(self.x, self.y)]
+        self.nodes = [(y-map.y_min)*map.nx + x - map.x_min for x, y in zip(self.x, self.y)]
 
 
 class Nodes(object):
     def __init__(self, map):
         self.count = map.nx*map.ny
         self.x = [x for x in range(map.x_min, map.x_max+1)]*map.ny
-        self.y = [y for y in range(map.y_min, map.y_max+1)
-                  for x in range(map.nx)]
+        self.y = [y for y in range(map.y_min, map.y_max+1) for x in range(map.nx)]
 
 
 class CreateBaseModel(object):
@@ -61,13 +58,13 @@ class CreateBaseModel(object):
 
         # Map
         map = Map()
-        self.map = map
+        self.map = Map()
 
         # Robot
         self.robot = Robot(map)
 
         # Obstacles
-        self.obst = Obstacles(map)
+        self.obsts = Obstacles(map)
 
         # Nodes
         self.nodes = Nodes(map)

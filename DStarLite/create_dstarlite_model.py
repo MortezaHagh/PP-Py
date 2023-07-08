@@ -36,7 +36,7 @@ class CreateDstarLiteModel(CreateBaseModel):
                      for i in range(self.nodes.count)]
 
         for inode in range(self.nodes.count):
-            if not inode in self.obst.nodes:
+            if not inode in self.obsts.nodes:
                 xnode = self.nodes.x[inode]
                 ynode = self.nodes.y[inode]
 
@@ -50,7 +50,7 @@ class CreateDstarLiteModel(CreateBaseModel):
                     if (self.map.x_min <= newx <= self.map.x_max) and (self.map.y_min <= newy <= self.map.y_max):
                         new_node = inode+ix+iy*(self.map.nx)
 
-                        if not new_node in self.obst.nodes:
+                        if not new_node in self.obsts.nodes:
                             successors[inode] = np.append(
                                 successors[inode], new_node)
                             predecessors[new_node] = np.append(

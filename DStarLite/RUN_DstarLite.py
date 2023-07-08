@@ -13,9 +13,11 @@ from common.plot_animation import PlotAnimation1
 from common.cal_smoothness import cal_smoothness
 from create_dstarlite_model import CreateDstarLiteModel
 
-# dist_type: manhattan or euclidean
+# adj_type: 4adj or 8adj
 # expand_method: random or heading
-setting = {'adj_type': '4adj', 'dist_type': 'manhattan',
+# dist_type: manhattan or euclidean
+setting = {'adj_type': '4adj', 
+           'dist_type': 'manhattan',
            'expand_method': 'heading'}
 
 # model

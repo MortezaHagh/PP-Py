@@ -1,7 +1,7 @@
 from cmath import sqrt
 
 
-def distance(x1, y1, x2, y2, type):
+def cal_cal_distance(x1, y1, x2, y2, type):
     if type == 'euclidean':
         dist = sqrt((x1-x2)**2+(y1-y2)**2)
     elif type == 'manhattan':

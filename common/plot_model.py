@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 
 
 def plot_model(model):
@@ -17,22 +18,18 @@ def plot_model(model):
 
     # # Obstacles
     # theta = np.linspace(0, 2*np.pi, 50)
-    # for i in range(0, model.obst.count):
-    #     ax.fill([model.obst.x[i] + model.obst.r*np.cos(t) for t in theta],
-    #             [model.obst.y[i] + model.obst.r*np.sin(t) for t in theta], 'b', edgecolor='b')
-    for i in range(model.obst.count):
-        ax.plot(model.obst.x, model.obst.y, 'o',  markersize=5,
-                markeredgecolor='k', markerfacecolor='k')
+    # for i in range(0, model.obsts.count):
+    #     ax.fill([model.obsts.x[i] + model.obsts.r*np.cos(t) for t in theta],
+    #             [model.obsts.y[i] + model.obsts.r*np.sin(t) for t in theta], 'b', edgecolor='b')
+    ax.plot(model.obsts.x, model.obsts.y, 'o',  markersize=5,
+            markeredgecolor='k', markerfacecolor='k')
 
     # Walls
-    ax.plot([model.map.x_min-0.5, model.map.x_min-0.5],
-            [model.map.y_min-0.5, model.map.y_max+0.5], color='k', linewidth=4)
-    ax.plot([model.map.x_min-0.5, model.map.x_max+0.5],
-            [model.map.y_max+0.5, model.map.y_max+0.5], color='k', linewidth=4)
-    ax.plot([model.map.x_max+0.5, model.map.x_max+0.5],
-            [model.map.y_max+0.5, model.map.y_min-0.5], color='k', linewidth=4)
-    ax.plot([model.map.x_max+0.5, model.map.x_min-0.5],
-            [model.map.y_min-0.5, model.map.y_min-0.5], color='k', linewidth=4)
+    lx = model.map.x_max-model.map.x_min + 1
+    ly = model.map.y_max-model.map.y_min + 1
+    rect = patches.Rectangle((model.map.x_min-0.5, model.map.y_min-0.5),
+                             lx, ly, linewidth=2, edgecolor='k', facecolor='none')
+    ax.add_patch(rect)
 
     return fig, ax
 

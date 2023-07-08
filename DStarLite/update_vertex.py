@@ -1,6 +1,6 @@
 import numpy as np
 from initialize import TopNode
-from common.distance import distance
+from common.ca_distance import distance
 
 
 def update_vertex(open, RHS, G, update_list, model, start):
@@ -23,7 +23,7 @@ def update_vertex(open, RHS, G, update_list, model, start):
             op.node = inode
             x = model.nodes.x[inode]
             y = model.nodes.y[inode]
-            op.h_cost = distance(start.x, start.y, x, y, model.dist_type)
+            op.h_cost = cal_distance(start.x, start.y, x, y, model.dist_type)
             c = min(G[inode], RHS[inode])
             op.key = [c+model.km+op.h_cost, c]
             op.ind = open.count

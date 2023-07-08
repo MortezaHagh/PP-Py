@@ -1,5 +1,5 @@
 import numpy as np
-from common.distance import distance
+from common.ca_distance import distance
 from update_vertex import update_vertex
 
 
@@ -15,7 +15,7 @@ def update_map(open, RHS, G, model, start, t):
         xl = model.nodes.x[model.s_last]
         yl = model.nodes.y[model.s_last]
         model.km = model.km + \
-            distance(xl, yl, start.x, start.y, model.dist_type)
+            cal_distance(xl, yl, start.x, start.y, model.dist_type)
         model.s_last = start.node
         update_list = model.predecessors[new_obst_node]
 

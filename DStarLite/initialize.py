@@ -1,10 +1,10 @@
-from common.distance import distance
+from common.ca_distance import distance
 
 
 class TopNode(object):
     def __init__(self, model):
         self.node = model.robot.goal_node
-        self.h_cost = distance(model.robot.xs, model.robot.ys,
+        self.h_cost = cal_distance(model.robot.xs, model.robot.ys,
                                model.robot.xt, model.robot.yt, model.dist_type)
         self.key = [self.h_cost, 0]
         self.ind = 0
