@@ -1,14 +1,16 @@
+import os
 import sys
-sys.path.append('../common')
+script_directory = os.path.dirname(os.path.abspath(sys.argv[0]))
+sys.path.append(os.path.join(script_directory, '..'))
 
 import time
-from cal_cost import cal_cost
 import matplotlib.pyplot as plt
-from plot_model import plot_model
 from dstar_lite import dstar_lite
-from plot_solution import plot_solution
-from plot_animation import PlotAnimation1
-from cal_smoothness import cal_smoothness
+from common.cal_cost import cal_cost
+from common.plot_model import plot_model
+from common.plot_solution import plot_solution
+from common.plot_animation import PlotAnimation1
+from common.cal_smoothness import cal_smoothness
 from create_dstarlite_model import CreateDstarLiteModel
 
 # dist_type: manhattan or euclidean
