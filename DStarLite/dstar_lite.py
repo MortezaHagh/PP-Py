@@ -118,36 +118,6 @@ class DStarLite:
 
     # ------------------------------------------------------------
 
-    def top_key(self):
-        keys = np.array([[np.random.rand(1)[-1], op.key[1], op.key[0]]
-                        for op in self.open.list])
-        ind = np.lexsort(keys.T)
-        top_node = self.open.list[ind[0]]
-        top_node.ind = ind[0]
-        self.top_node = top_node
-
-    def turn_cost(self, succ):
-        dtheta = []
-        y = self.model.nodes.y[self.start.node]
-        x = self.model.nodes.x[self.start.node]
-        for i in succ:
-            dy = self.model.nodes.y[i]-y
-            dx = self.model.nodes.x[i]-x
-            theta = np.arctan2(dy, dx)
-            dt = np.arctan2(np.sin(theta-self.current_dir),
-                            np.cos(theta-self.current_dir))
-            dtheta.append(dt)
-        return dtheta
-
-    def compare_keys(self, key1, key2):
-        result = True
-        if key1[0] > key2[0]:
-            result = False
-        elif key1[0] == key2[0]:
-            if key1[1] >= key2[1]:
-                result = False
-        return result
-
     def update_vertex(self, update_list):
         for inode in update_list:
             if inode != self.model.robot.goal_node:
@@ -195,6 +165,36 @@ class DStarLite:
 
                 # update vertex
                 self.update_vertex(update_list)
+
+    def top_key(self):
+        keys = np.array([[np.random.rand(1)[-1], op.key[1], op.key[0]]
+                        for op in self.open.list])
+        ind = np.lexsort(keys.T)
+        top_node = self.open.list[ind[0]]
+        top_node.ind = ind[0]
+        self.top_node = top_node
+
+    def turn_cost(self, succ):
+        dtheta = []
+        y = self.model.nodes.y[self.start.node]
+        x = self.model.nodes.x[self.start.node]
+        for i in succ:
+            dy = self.model.nodes.y[i]-y
+            dx = self.model.nodes.x[i]-x
+            theta = np.arctan2(dy, dx)
+            dt = np.arctan2(np.sin(theta-self.current_dir),
+                            np.cos(theta-self.current_dir))
+            dtheta.append(dt)
+        return dtheta
+
+    def compare_keys(self, key1, key2):
+        result = True
+        if key1[0] > key2[0]:
+            result = False
+        elif key1[0] == key2[0]:
+            if key1[1] >= key2[1]:
+                result = False
+        return result
 
     # ------------------------------------------------------------
 

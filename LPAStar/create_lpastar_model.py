@@ -6,7 +6,7 @@ from common.create_model_base import CreateBaseModel
 class CreateLPAStarModel(CreateBaseModel):
     def __init__(self, setting, use_rnd=False):
         CreateBaseModel.__init__(self, use_rnd)
-        print('Create DstarLite Model from Base Model')
+        print('Create LPA* Model from Base Model')
 
         if setting['adj_type'] == '4adj':
             ixy = [[1, 0], [0, 1], [0, -1], [-1, 0]]
@@ -71,7 +71,6 @@ class CreateLPAStarModel(CreateBaseModel):
         self.predecessors = predecessors
         self.pred_cost = pred_cost
 
-        self.km = 0
-        self.s_last = self.robot.start_node
+        self.start_node = self.robot.start_node
         self.G = np.inf*np.ones(self.nodes.count)
         self.RHS = np.inf*np.ones(self.nodes.count)

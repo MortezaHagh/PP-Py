@@ -4,7 +4,6 @@ class TopNode(object):
         self.key = 0
         self.ind = 0
         self.node = 0
-        self.h_cost = 0
 
 
 class Open(object):
