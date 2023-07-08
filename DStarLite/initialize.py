@@ -1,4 +1,4 @@
-from common.ca_distance import distance
+from common.cal_distance import cal_distance
 
 
 class TopNode(object):

@@ -1,5 +1,5 @@
 import numpy as np
-from angle_diff import angle_diff
+from common.angle_diff import angle_diff
 
 
 def cal_smoothness(path):
