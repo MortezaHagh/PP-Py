@@ -125,4 +125,5 @@ class CreateBaseModel(object):
         self.obsts = Obstacles(map, self.nodes, self.robot, use_rnd)
 
         # Dynamic Obstacles
-        self.dynamic_obsts = DynamicObsts(map)
+        if not use_rnd:
+            self.dynamic_obsts = DynamicObsts(map)
