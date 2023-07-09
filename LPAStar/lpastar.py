@@ -26,7 +26,7 @@ class LPAStar:
         start_time = time.process_time()
 
         # dstar_lite
-        self.dstar_lite()
+        self.lpastar()
 
         # end process time
         self.end_time = time.process_time()
@@ -34,7 +34,7 @@ class LPAStar:
 
     # ------------------------------------------------------------
 
-    def dstar_lite(self):
+    def lpastar(self):
         t = 1
 
         # # main procedure

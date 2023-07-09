@@ -32,15 +32,15 @@ print('dirs:', dsl_obj.sol.dirs)
 print('turns:', eval.path_turns, ' |||  time:', dsl_obj.sol.proc_time)
 print('length:', eval.path_length, ' |||  smoothness:', eval.smoothness) 
 
-# # plot
-# plot_dyno = True # False True
-# plotter = Plotter(model, plot_dyno)
-# plotter.plot_solution(dsl_obj.sol)
-# plt.show()
-
-# animation
-plot_dyno = False # False True
+# plot
+plot_dyno = True # False True
 plotter = Plotter(model, plot_dyno)
-plotter.plot_anim(dsl_obj.sol)
-plotter.anim.save('sim-1.gif', fps=4)
+plotter.plot_solution(dsl_obj.sol)
 plt.show()
+
+# # animation
+# plot_dyno = False # False True
+# plotter = Plotter(model, plot_dyno)
+# plotter.plot_anim(dsl_obj.sol)
+# plotter.anim.save('sim-1.gif', fps=4)
+# plt.show()
