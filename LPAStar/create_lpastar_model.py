@@ -4,8 +4,8 @@ from common.create_model_base import CreateBaseModel
 
 
 class CreateLPAStarModel(CreateBaseModel):
-    def __init__(self, setting, use_rnd=False):
-        CreateBaseModel.__init__(self, use_rnd)
+    def __init__(self, setting, has_dynamic_obsts=False, use_rnd=False):
+        CreateBaseModel.__init__(self, has_dynamic_obsts, use_rnd)
         print('Create LPA* Model from Base Model')
 
         if setting['adj_type'] == '4adj':

@@ -17,8 +17,7 @@ setting = {'adj_type': '8adj',
            'expand_method': 'heading'}
 
 # model
-use_rnd = True # False True
-model = CreateLPAStarModel(setting, use_rnd)
+model = CreateLPAStarModel(setting, has_dynamic_obsts=True, use_rnd=False)
 
 # dstar lite
 lpas_obj = LPAStar(model)

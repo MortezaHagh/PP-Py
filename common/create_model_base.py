@@ -91,12 +91,18 @@ class Obstacles(object):
 
 
 class DynamicObsts:
-    def __init__(self, map):
-        self.t = [2, 4]
-        self.x = [3, 7]
-        self.y = [2, 2]
-        self.nodes = [(y-map.y_min)*map.nx + x -
-                      map.x_min for x, y in zip(self.x, self.y)]
+    def __init__(self, map, has_dynamic_obsts=False):
+        if has_dynamic_obsts:
+            self.t = [2, 4]
+            self.x = [3, 7]
+            self.y = [2, 2]
+            self.nodes = [(y-map.y_min)*map.nx + x -
+                          map.x_min for x, y in zip(self.x, self.y)]
+        else:
+            self.t = []
+            self.x = []
+            self.y = []
+            self.nodes = []
 
 
 class Nodes(object):
@@ -108,7 +114,7 @@ class Nodes(object):
 
 
 class CreateBaseModel(object):
-    def __init__(self, use_rnd=False):
+    def __init__(self, has_dynamic_obsts=False, use_rnd=False):
         print('Create Base Model')
 
         # Map
@@ -125,5 +131,4 @@ class CreateBaseModel(object):
         self.obsts = Obstacles(map, self.nodes, self.robot, use_rnd)
 
         # Dynamic Obstacles
-        if not use_rnd:
-            self.dynamic_obsts = DynamicObsts(map)
+        self.dynamic_obsts = DynamicObsts(map, has_dynamic_obsts)

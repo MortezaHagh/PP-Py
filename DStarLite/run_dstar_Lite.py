@@ -17,8 +17,7 @@ setting = {'adj_type': '8adj',
            'expand_method': 'heading'}
 
 # model
-use_rnd = False # False True
-model = CreateDstarLiteModel(setting, use_rnd)
+model = CreateDstarLiteModel(setting, has_dynamic_obsts=True, use_rnd=False)
 
 # dstar lite
 dsl_obj = DStarLite(model)
