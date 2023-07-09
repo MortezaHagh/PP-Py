@@ -3,7 +3,7 @@ import sys
 script_directory = os.path.dirname(os.path.abspath(sys.argv[0]))
 sys.path.append(os.path.join(script_directory, '..'))
 
-from astar import LPAStar
+from astar import AStar
 import matplotlib.pyplot as plt
 from common.plotting import Plotter
 from common.evaluate import Evaluate
@@ -21,26 +21,26 @@ use_rnd = False # False True
 model = CreateAStarModel(setting, use_rnd)
 
 # dstar lite
-dsl_obj = LPAStar(model)
+astar_obj = AStar(model)
 
 # Evaluate
-eval = Evaluate(dsl_obj.sol)
+eval = Evaluate(astar_obj.sol)
 
 # results
-print('nodes:', dsl_obj.sol.nodes)
-print('dirs:', dsl_obj.sol.dirs)
-print('turns:', eval.path_turns, ' |||  time:', dsl_obj.sol.proc_time)
+print('nodes:', astar_obj.sol.nodes)
+print('dirs:', astar_obj.sol.dirs)
+print('turns:', eval.path_turns, ' |||  time:', astar_obj.sol.proc_time)
 print('length:', eval.path_length, ' |||  smoothness:', eval.smoothness) 
 
 # # plot
 # plot_dyno = True # False True
 # plotter = Plotter(model, plot_dyno)
-# plotter.plot_solution(dsl_obj.sol)
+# plotter.plot_solution(astar_obj.sol)
 # plt.show()
 
 # animation
 plot_dyno = False # False True
 plotter = Plotter(model, plot_dyno)
-plotter.plot_anim(dsl_obj.sol)
+plotter.plot_anim(astar_obj.sol)
 plotter.anim.save('sim-1.gif', fps=4)
 plt.show()

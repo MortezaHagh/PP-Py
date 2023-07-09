@@ -1,4 +1,5 @@
 import numpy as np
+from support import Neighbor
 import matplotlib.pyplot as plt
 from common.create_model_base import CreateBaseModel
 
@@ -25,15 +26,8 @@ class CreateAStarModel(CreateBaseModel):
         self.dist_type = setting['dist_type']
         self.expand_method = setting['expand_method']
 
-        # successors and predecessors
-        successors = [np.array([], dtype='int')
-                      for i in range(self.nodes.count)]
-        succ_cost = [np.array([])
-                     for i in range(self.nodes.count)]
-        predecessors = [np.array([], dtype='int')
-                        for i in range(self.nodes.count)]
-        pred_cost = [np.array([])
-                     for i in range(self.nodes.count)]
+        # neighbors
+        neighbors = [[] for i in range(self.nodes.count)]
 
         for inode in range(self.nodes.count):
             if not inode in self.obsts.nodes:
@@ -45,32 +39,25 @@ class CreateAStarModel(CreateBaseModel):
                     iy = ixy[iadj][1]
                     newx = xnode+ix
                     newy = ynode+iy
+                    new_dir = np.arctan2(iy, ix)
 
                     # check if the Node is within array bound
                     if (self.map.x_min <= newx <= self.map.x_max) and (self.map.y_min <= newy <= self.map.y_max):
                         new_node = inode+ix+iy*(self.map.nx)
 
                         if not new_node in self.obsts.nodes:
-                            successors[inode] = np.append(
-                                successors[inode], new_node)
-                            predecessors[new_node] = np.append(
-                                predecessors[new_node], inode)
 
                             if ix != 0 and iy != 0:
                                 cost = edge_len
                             else:
                                 cost = 1
 
-                            succ_cost[inode] = np.append(
-                                succ_cost[inode], cost)
-                            pred_cost[new_node] = np.append(
-                                pred_cost[new_node], cost)
+                            new_neighb = Neighbor()
+                            new_neighb.x = newx
+                            new_neighb.y = newy
+                            new_neighb.cost = cost
+                            new_neighb.dir = new_dir
+                            new_neighb.node = new_node
+                            neighbors[inode].append(new_neighb)
 
-        self.successors = successors
-        self.succ_cost = succ_cost
-        self.predecessors = predecessors
-        self.pred_cost = pred_cost
-
-        self.start_node = self.robot.start_node
-        self.G = np.inf*np.ones(self.nodes.count)
-        self.RHS = np.inf*np.ones(self.nodes.count)
+        self.neighbors = neighbors
