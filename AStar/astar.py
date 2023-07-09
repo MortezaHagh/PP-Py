@@ -43,6 +43,10 @@ class AStar:
             # select new Top Node
             self.select_top_node()
 
+        # optimal paths
+        self.path_nodes = self.optimal_path()
+
+        # create sol
         self.end_time = time.process_time()
         self.create_sol()
 
@@ -71,8 +75,8 @@ class AStar:
                 if neigh.f_cost < self.open.list[ind].f_cost:
                     self.open.list[ind] = neigh
             else:
-                self.open.count += 1
                 neigh.ind = self.open.count
+                self.open.count += 1
                 self.open.list.append(neigh)
                 self.open.nodes.append(neigh.node)
 
@@ -86,36 +90,30 @@ class AStar:
         if self.model.expand_method == 'random':
             min_ind = np.argmin(f_costs)
         elif self.model.expand_method == 'heading':
-            dtheta = [abs(angle_diff(self.top_node.dir, self.open.list[ind].dir)) for ind in inds]
+            dtheta = [
+                abs(angle_diff(self.top_node.dir, self.open.list[ind].dir)) for ind in inds]
             costs = [dtheta, f_costs]
             sorted_inds = np.lexsort(costs)
             min_ind = sorted_inds[0]
-        self.open.list[min_ind].visited = True
-        self.top_node = self.open.list[min_ind]
+        top_ind = inds[min_ind]
+        self.open.list[top_ind].visited = True
+        self.top_node = self.open.list[top_ind]
 
-    def final_path_nodes(self):
-        i = 0
-        path_nodes = []
-        node_number = self.model.robot.goal_node
-        path_nodes.append(node_number)
+    def optimal_path(self):
+        i = 1
+        goal_ind = self.top_node.ind
+        path_nodes = [self.model.robot.goal_node]
+        parent_node = self.top_node.p_node
+        parent_ind = self.open.nodes.index(parent_node)
+        while parent_node != self.model.robot.start_node:
+            path_nodes.append(parent_node)
+            parent_node = self.open.list[parent_ind].p_node
+            parent_ind = self.open.nodes.index(parent_node)
+            i += 1
 
+        path_nodes.append(self.model.robot.start_node)
         path_nodes.reverse()
         return path_nodes
-
-    # ------------------------------------------------------------
-
-    def turn_cost(self, preds, node, current_dir):
-        dtheta = []
-        y = self.model.nodes.y[node]
-        x = self.model.nodes.x[node]
-        for i in preds:
-            dy = self.model.nodes.y[i]-y
-            dx = self.model.nodes.x[i]-x
-            theta = np.arctan2(dy, dx)
-            dt = np.arctan2(np.sin(theta-current_dir),
-                            np.cos(theta-current_dir))
-            dtheta.append(dt)
-        return dtheta
 
     # ------------------------------------------------------------
 

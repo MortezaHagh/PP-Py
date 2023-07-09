@@ -12,8 +12,8 @@ from create_astar_model import CreateAStarModel
 # adj_type: 4adj or 8adj
 # expand_method: random or heading
 # dist_type: manhattan or euclidean
-setting = {'adj_type': '8adj', 
-           'dist_type': 'euclidean',
+setting = {'adj_type': '4adj', 
+           'dist_type': 'manhattan',
            'expand_method': 'heading'}
 
 # model
@@ -32,15 +32,15 @@ print('dirs:', astar_obj.sol.dirs)
 print('turns:', eval.path_turns, ' |||  time:', astar_obj.sol.proc_time)
 print('length:', eval.path_length, ' |||  smoothness:', eval.smoothness) 
 
-# # plot
-# plot_dyno = True # False True
-# plotter = Plotter(model, plot_dyno)
-# plotter.plot_solution(astar_obj.sol)
-# plt.show()
-
-# animation
+# plot
 plot_dyno = False # False True
 plotter = Plotter(model, plot_dyno)
-plotter.plot_anim(astar_obj.sol)
-plotter.anim.save('sim-1.gif', fps=4)
+plotter.plot_solution(astar_obj.sol)
 plt.show()
+
+# # animation
+# plot_dyno = False # False True
+# plotter = Plotter(model, plot_dyno)
+# plotter.plot_anim(astar_obj.sol)
+# plotter.anim.save('sim-1.gif', fps=4)
+# plt.show()

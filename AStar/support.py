@@ -31,14 +31,7 @@ class Open(object):
     def __init__(self, top_node):
         self.list = [top_node]
         self.count = 1
-        self.nodes = np.array([top_node.node])
-
-# class Start(object):
-#     def __init__(self):
-#         self.x = 0
-#         self.y = 0
-#         self.key = 0
-#         self.node = 0
+        self.nodes = [top_node.node]
 
 
 class Sol(object):

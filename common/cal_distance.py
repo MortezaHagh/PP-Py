@@ -1,4 +1,4 @@
-from cmath import sqrt
+from math import sqrt
 
 
 def cal_distance(x1, y1, x2, y2, type):
