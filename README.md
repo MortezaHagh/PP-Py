@@ -27,7 +27,7 @@ Incremental heuristic search methods are used for **dynamic path planning** with
 
 - Go into the methods directory.
 - Run the **RUN_[Methods_name].py** file
-  - AStar/run_Astar.py
+  - AStar/run_astar.py
   - LPAStar/run_lpastar.py
   - DStarLite/run_dstar_Lite.y
 
