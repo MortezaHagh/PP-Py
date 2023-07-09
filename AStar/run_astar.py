@@ -12,13 +12,13 @@ from create_astar_model import CreateAStarModel
 # adj_type: 4adj or 8adj
 # expand_method: random or heading
 # dist_type: manhattan or euclidean
-setting = {'adj_type': '4adj', 
-           'dist_type': 'manhattan',
+setting = {'adj_type': '8adj', 
+           'dist_type': 'euclidean',
            'expand_method': 'heading'}
 
 # model
-use_rnd = False # False True
-model = CreateAStarModel(setting, use_rnd)
+use_rnd = True # False True
+model = CreateAStarModel(setting, has_dynamic_obsts=False, use_rnd=True)
 
 # dstar lite
 astar_obj = AStar(model)
