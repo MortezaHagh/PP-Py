@@ -14,11 +14,10 @@ from create_astar_model import CreateAStarModel
 # dist_type: manhattan or euclidean
 setting = {'adj_type': '8adj', 
            'dist_type': 'euclidean',
-           'expand_method': 'heading'}
+           'expand_method': 'random'}
 
 # model
-use_rnd = True # False True
-model = CreateAStarModel(setting, has_dynamic_obsts=False, use_rnd=True)
+model = CreateAStarModel(setting, has_dynamic_obsts=False, use_rnd=False)
 
 # dstar lite
 astar_obj = AStar(model)

@@ -56,29 +56,34 @@ class AStar:
         feas_neighbors = []
         neghbors = self.model.neighbors[self.top_node.node]
         for neigh in neghbors:
-            if neigh not in self.closed.nodes:
+            if not (neigh.node in self.closed.nodes):
+                if neigh.node==28: 
+                    print("hoy")
                 feas_neighb = TopNode()
                 feas_neighb.dir = neigh.dir
                 feas_neighb.node = neigh.node
                 feas_neighb.p_node = self.top_node.node
                 feas_neighb.g_cost = self.top_node.g_cost + neigh.cost
-                h_cost = cal_distance(
-                    self.model.robot.xt, self.model.robot.yt, neigh.x, neigh.y, self.model.dist_type)
-                feas_neighb.f_cost = feas_neighb.g_cost + h_cost
+                h_cost = cal_distance(self.model.robot.xt, self.model.robot.yt, neigh.x, neigh.y, self.model.dist_type)
+                feas_neighb.f_cost = feas_neighb.g_cost + h_cost*1
                 feas_neighbors.append(feas_neighb)
         return feas_neighbors
 
     def update_open(self, neighbors):
+        if neighbors==[]:
+            print("empty neighbors!")
+            raise
         for neigh in neighbors:
-            if neigh in self.open.nodes:
-                ind = self.open.nodes.index(neigh)
+            if neigh.node in self.open.nodes:
+                ind = self.open.nodes.index(neigh.node)
                 if neigh.f_cost < self.open.list[ind].f_cost:
                     self.open.list[ind] = neigh
             else:
-                neigh.ind = self.open.count
                 self.open.count += 1
+                # neigh.ind = self.open.count-1
                 self.open.list.append(neigh)
                 self.open.nodes.append(neigh.node)
+                self.open.list[-1].ind = self.open.count-1
 
     def select_top_node(self):
         inds = [op.ind for op in self.open.list if not op.visited]
@@ -90,14 +95,15 @@ class AStar:
         if self.model.expand_method == 'random':
             min_ind = np.argmin(f_costs)
         elif self.model.expand_method == 'heading':
-            dtheta = [
-                abs(angle_diff(self.top_node.dir, self.open.list[ind].dir)) for ind in inds]
+            dtheta = [abs(angle_diff(self.top_node.dir, self.open.list[ind].dir)) for ind in inds]
             costs = [dtheta, f_costs]
             sorted_inds = np.lexsort(costs)
             min_ind = sorted_inds[0]
         top_ind = inds[min_ind]
         self.open.list[top_ind].visited = True
         self.top_node = self.open.list[top_ind]
+        self.closed.count += 1
+        self.closed.nodes.append(self.top_node.node)
 
     def optimal_path(self):
         i = 1

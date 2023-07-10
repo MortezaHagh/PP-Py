@@ -32,8 +32,7 @@ class Robot(object):
             self.yt = yy[1]
             self.dir = math.pi/2
             self.goal_node = (self.yt - map.y_min)*(map.nx) + self.xt-map.x_min
-            self.start_node = (self.ys - map.y_min) * \
-                (map.nx) + self.xs-map.x_min
+            self.start_node = (self.ys - map.y_min)*(map.nx) + self.xs-map.x_min
         else:
             self.xs = 1
             self.ys = 1
