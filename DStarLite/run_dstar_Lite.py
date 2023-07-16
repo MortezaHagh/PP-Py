@@ -24,6 +24,7 @@ dsl_obj = DStarLite(model)
 
 # Evaluate
 eval = Evaluate(dsl_obj.sol)
+dsl_obj.sol.proc_time = round(dsl_obj.sol.proc_time, 3)
 
 # results
 print('nodes:', dsl_obj.sol.nodes)
