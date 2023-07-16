@@ -24,6 +24,7 @@ lpas_obj = LPAStar(model)
 
 # Evaluate
 eval = Evaluate(lpas_obj.sol)
+lpas_obj.sol.proc_time = round(lpas_obj.sol.proc_time, 3)
 
 # results
 print('nodes:', lpas_obj.sol.nodes)
