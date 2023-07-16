@@ -17,7 +17,7 @@ setting = {'adj_type': '8adj',
            'expand_method': 'random'}
 
 # model
-model = CreateAStarModel(setting, has_dynamic_obsts=False, use_rnd=False)
+model = CreateAStarModel(setting, has_dynamic_obsts=False, use_rnd=True)
 
 # dstar lite
 astar_obj = AStar(model)

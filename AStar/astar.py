@@ -57,8 +57,6 @@ class AStar:
         neghbors = self.model.neighbors[self.top_node.node]
         for neigh in neghbors:
             if not (neigh.node in self.closed.nodes):
-                if neigh.node==28: 
-                    print("hoy")
                 feas_neighb = TopNode()
                 feas_neighb.dir = neigh.dir
                 feas_neighb.node = neigh.node
@@ -71,22 +69,22 @@ class AStar:
 
     def update_open(self, neighbors):
         if neighbors==[]:
-            print("empty neighbors!")
-            raise
+            # print("empty neighbors!")
+            return
         for neigh in neighbors:
             if neigh.node in self.open.nodes:
                 ind = self.open.nodes.index(neigh.node)
                 if neigh.f_cost < self.open.list[ind].f_cost:
                     self.open.list[ind] = neigh
+                    self.open.list[ind].ind = ind
             else:
                 self.open.count += 1
-                # neigh.ind = self.open.count-1
                 self.open.list.append(neigh)
                 self.open.nodes.append(neigh.node)
                 self.open.list[-1].ind = self.open.count-1
 
     def select_top_node(self):
-        inds = [op.ind for op in self.open.list if not op.visited]
+        inds = [op.ind for op in self.open.list if op.visited==False]
         if len(inds) < 0:
             print(" error: Astar failed to find a path, impossible!")
             raise
@@ -134,7 +132,6 @@ class AStar:
                               self.model.robot.xt, self.model.robot.yt, self.model.dist_type)
         top_node.g_cost = 0
         top_node.f_cost = h_cost
-
         return top_node
 
     def create_sol(self):
