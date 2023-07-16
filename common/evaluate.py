@@ -5,9 +5,9 @@ from common.angle_diff import angle_diff
 class Evaluate:
     def __init__(self, sol):
         self.sol = sol
-        self.path_length = self.cal_cost()
-        self.smoothness = self.cal_smoothness()
-        self.path_turns = self.smoothness/(np.pi/2)
+        self.path_length = round(self.cal_cost(), 2)
+        self.smoothness = round(self.cal_smoothness(), 2)
+        self.path_turns = round(self.smoothness/(np.pi/2), 2)
 
     def cal_cost(self):
         dxPath = np.diff(self.sol.x)
