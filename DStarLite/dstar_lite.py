@@ -30,7 +30,6 @@ class DStarLite:
         self.dstar_lite()
 
         # end process time
-        self.end_time = time.process_time()
         self.sol.proc_time = self.end_time - start_time
 
     # ------------------------------------------------------------

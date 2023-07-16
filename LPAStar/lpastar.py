@@ -29,7 +29,6 @@ class LPAStar:
         self.lpastar()
 
         # end process time
-        self.end_time = time.process_time()
         self.sol.proc_time = self.end_time - start_time
 
     # ------------------------------------------------------------
