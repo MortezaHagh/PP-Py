@@ -29,8 +29,8 @@ astar_obj.sol.proc_time = round(astar_obj.sol.proc_time, 4)
 # results
 print('nodes:', astar_obj.sol.nodes)
 print('dirs:', astar_obj.sol.dirs)
-print('turns:', eval.path_turns, ' |||  time:', astar_obj.sol.proc_time)
-print('length:', eval.path_length, ' |||  smoothness:', eval.smoothness) 
+print('turns:', eval.path_turns, '      |||  time:', astar_obj.sol.proc_time)
+print('length:', eval.path_length, '    |||  smoothness:', eval.smoothness) 
 
 # plot
 plot_dyno = False # False True

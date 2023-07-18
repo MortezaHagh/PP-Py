@@ -29,8 +29,8 @@ lpas_obj.sol.proc_time = round(lpas_obj.sol.proc_time, 3)
 # results
 print('nodes:', lpas_obj.sol.nodes)
 print('dirs:', lpas_obj.sol.dirs)
-print('turns:', eval.path_turns, ' |||  time:', lpas_obj.sol.proc_time)
-print('length:', eval.path_length, ' |||  smoothness:', eval.smoothness) 
+print('turns:', eval.path_turns, '      |||  time:', lpas_obj.sol.proc_time)
+print('length:', eval.path_length, '    |||  smoothness:', eval.smoothness) 
 
 # plot
 plot_dyno = True # False True

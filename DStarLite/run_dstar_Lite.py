@@ -29,8 +29,8 @@ dsl_obj.sol.proc_time = round(dsl_obj.sol.proc_time, 3)
 # results
 print('nodes:', dsl_obj.sol.nodes)
 print('dirs:', dsl_obj.sol.dirs)
-print('turns:', eval.path_turns, ' |||  time:', dsl_obj.sol.proc_time)
-print('length:', eval.path_length, ' |||  smoothness:', eval.smoothness) 
+print('turns:', eval.path_turns, '      |||  time:', dsl_obj.sol.proc_time)
+print('length:', eval.path_length, '    |||  smoothness:', eval.smoothness) 
 
 # plot
 plot_dyno = True # False True
