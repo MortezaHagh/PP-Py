@@ -9,6 +9,7 @@ class CreateAStarModel(CreateBaseModel):
         CreateBaseModel.__init__(self, has_dynamic_obsts, use_rnd)
         print('Create A* Model from Base Model')
 
+        # settings
         if setting['adj_type'] == '4adj':
             ixy = [[1, 0], [0, 1], [0, -1], [-1, 0]]
             nAdj = 4
@@ -25,6 +26,7 @@ class CreateAStarModel(CreateBaseModel):
         self.adj_type = setting['adj_type']
         self.dist_type = setting['dist_type']
         self.expand_method = setting['expand_method']
+        self.dir_coeff = 1.0
 
         # neighbors
         neighbors = [[] for i in range(self.nodes.count)]
