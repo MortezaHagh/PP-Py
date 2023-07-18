@@ -62,7 +62,8 @@ class AStar:
                 feas_neighb.p_node = self.top_node.node
                 feas_neighb.g_cost = self.top_node.g_cost + neigh.cost
                 h_cost = cal_distance(self.model.robot.xt, self.model.robot.yt, neigh.x, neigh.y, self.model.dist_type)
-                feas_neighb.f_cost = feas_neighb.g_cost + h_cost*1
+                feas_neighb.dir_cost = int(not (self.top_node.dir - neigh.dir)==0)*1.0
+                feas_neighb.f_cost = feas_neighb.g_cost + h_cost*1 + feas_neighb.dir_cost
                 feas_neighbors.append(feas_neighb)
         return feas_neighbors
 
