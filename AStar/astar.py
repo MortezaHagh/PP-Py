@@ -9,6 +9,9 @@ from common.cal_distance import cal_distance
 class AStar:
     def __init__(self, model):
 
+        # settings
+        self.dir_coeff = 0.0
+
         # initialize
         self.model = model
         self.closed = Closed()
@@ -60,7 +63,7 @@ class AStar:
                 feas_neighb.dir = neigh.dir
                 feas_neighb.node = neigh.node
                 feas_neighb.p_node = self.top_node.node
-                feas_neighb.dir_cost = int(not (self.top_node.dir - neigh.dir)==0)*self.model.dir_coeff
+                feas_neighb.dir_cost = int(not (self.top_node.dir - neigh.dir)==0)*self.dir_coeff
                 feas_neighb.g_cost = self.top_node.g_cost + neigh.cost + feas_neighb.dir_cost
                 h_cost = cal_distance(self.model.robot.xt, self.model.robot.yt, neigh.x, neigh.y, self.model.dist_type)
                 feas_neighb.f_cost = feas_neighb.g_cost + h_cost*1
