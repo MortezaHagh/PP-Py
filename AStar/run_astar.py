@@ -27,20 +27,28 @@ eval = Evaluate(astar_obj.sol)
 astar_obj.sol.proc_time = round(astar_obj.sol.proc_time, 4)
 
 # results
+print(' ----------- results ------------')
 print('nodes:', astar_obj.sol.nodes)
 print('dirs:', astar_obj.sol.dirs)
-print('turns:', eval.path_turns, '      |||  time:', astar_obj.sol.proc_time)
-print('length:', eval.path_length, '    |||  smoothness:', eval.smoothness) 
+print('time:', astar_obj.sol.proc_time)
+print('length:', eval.path_length)
+print('turns:', eval.path_turns)
+print('smoothness:', eval.smoothness)
+print(' --------------------------------')
 
 # plot
-plot_dyno = False # False True
+name = 'sim-2'
+plot_dyno = False
+do_animate = True  # True - False
 plotter = Plotter(model, plot_dyno)
-plotter.plot_solution(astar_obj.sol)
+if not do_animate:
+    name = name + '.png'
+    pic_name = os.path.join(script_directory, 'Results/'+name) 
+    plotter.plot_solution(astar_obj.sol)
+    plotter.fig.savefig(pic_name)
+else:
+    name = name + '.gif'
+    pic_name = os.path.join(script_directory, 'Results/'+name) 
+    plotter.plot_anim(astar_obj.sol)
+    plotter.anim.save(pic_name, fps=4)
 plt.show()
-
-# # animation
-# plot_dyno = False # False True
-# plotter = Plotter(model, plot_dyno)
-# plotter.plot_anim(astar_obj.sol)
-# plotter.anim.save('sim-1.gif', fps=4)
-# plt.show()
