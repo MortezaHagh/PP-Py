@@ -35,11 +35,17 @@ print('length:', eval.path_length)
 print('turns:', eval.path_turns)
 print('smoothness:', eval.smoothness)
 print(' --------------------------------')
+print('n_expanded:', astar_obj.n_expanded)
+print('n_open:', astar_obj.open.count)
+print('n_reopened:', astar_obj.n_reopened)
+print('n_closed:', astar_obj.closed.count)
+print('n_final_open:', astar_obj.open.count-astar_obj.closed.count)
+
 
 # plot
 name = 'sim-2'
 plot_dyno = False
-do_animate = True  # True - False
+do_animate = False  # True - False
 plotter = Plotter(model, plot_dyno)
 if not do_animate:
     name = name + '.png'

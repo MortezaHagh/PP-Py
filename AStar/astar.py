@@ -12,6 +12,11 @@ class AStar:
         # settings
         self.dir_coeff = 0.0
 
+        # stats
+        self.n_expanded = 0
+        self.n_final_open = 0
+        self.n_reopened = 0
+
         # initialize
         self.model = model
         self.closed = Closed()
@@ -59,6 +64,7 @@ class AStar:
         neghbors = self.model.neighbors[self.top_node.node]
         for neigh in neghbors:
             if not (neigh.node in self.closed.nodes):
+                self.n_expanded += 1
                 feas_neighb = TopNode()
                 feas_neighb.dir = neigh.dir
                 feas_neighb.node = neigh.node
@@ -78,6 +84,7 @@ class AStar:
             if neigh.node in self.open.nodes:
                 ind = self.open.nodes.index(neigh.node)
                 if neigh.f_cost < self.open.list[ind].f_cost:
+                    self.n_reopened += 1
                     self.open.list[ind] = neigh
                     self.open.list[ind].ind = ind
             else:
