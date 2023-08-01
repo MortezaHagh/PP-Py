@@ -35,10 +35,10 @@ print('length:', eval.path_length)
 print('turns:', eval.path_turns)
 print('smoothness:', eval.smoothness)
 print(' --------------------------------')
-# print('n_expanded:', dsl_obj.n_expanded)
-# print('n_opened:', dsl_obj.n_opened)
-# print('n_reopened:', dsl_obj.n_reopened)
-# print('n_final_open:', dsl_obj.open.count)
+print('n_expanded:', dsl_obj.n_expanded)
+print('n_opened:', dsl_obj.n_opened)
+print('n_reopened:', dsl_obj.n_reopened)
+print('n_final_open:', dsl_obj.open.count)
 
 
 # plot

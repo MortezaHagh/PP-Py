@@ -8,6 +8,12 @@ from common.cal_distance import cal_distance
 class DStarLite:
     def __init__(self, model):
 
+         # stats
+        self.n_opened = 0
+        self.n_reopened = 0
+        self.n_expanded = 0
+        self.n_final_open = 0
+        
         # initialize
         self.model = model
         top_node = self.create_top_node()
@@ -120,16 +126,19 @@ class DStarLite:
     def update_vertex(self, update_list):
         for inode in update_list:
             if inode != self.model.robot.goal_node:
+                self.n_expanded += 1
                 succ = self.model.successors[inode]
                 succ_c = self.model.succ_cost[inode]
                 succ_g = np.array(self.G[succ])
                 self.RHS[inode] = min(succ_g+succ_c)
 
             open_nodes = [op.node for op in self.open.list]
+            flag_reopen = False
             if inode in open_nodes:
                 ind = open_nodes.index(inode)
                 self.open.list.pop(ind)
                 self.open.count -= 1
+                flag_reopen = True
 
             if self.G[inode] != self.RHS[inode]:
                 self.open.count += 1
@@ -143,6 +152,9 @@ class DStarLite:
                 op.key = [c+self.model.km+op.h_cost, c]
                 op.ind = self.open.count
                 self.open.list.append(op)
+                self.n_opened += 1
+                if flag_reopen:
+                    self.n_reopened +=1
 
     def update_map(self, t):
         for i, do_t in enumerate(self.model.dynamic_obsts.t):
