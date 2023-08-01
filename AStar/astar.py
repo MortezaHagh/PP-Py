@@ -14,8 +14,8 @@ class AStar:
 
         # stats
         self.n_expanded = 0
-        self.n_final_open = 0
         self.n_reopened = 0
+        self.n_final_open = 0
 
         # initialize
         self.model = model
