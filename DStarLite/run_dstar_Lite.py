@@ -27,20 +27,35 @@ eval = Evaluate(dsl_obj.sol)
 dsl_obj.sol.proc_time = round(dsl_obj.sol.proc_time, 3)
 
 # results
+print(' ----------- results ------------')
 print('nodes:', dsl_obj.sol.nodes)
 print('dirs:', dsl_obj.sol.dirs)
-print('turns:', eval.path_turns, '      |||  time:', dsl_obj.sol.proc_time)
-print('length:', eval.path_length, '    |||  smoothness:', eval.smoothness) 
+print('time:', dsl_obj.sol.proc_time)
+print('length:', eval.path_length)
+print('turns:', eval.path_turns)
+print('smoothness:', eval.smoothness)
+print(' --------------------------------')
+# print('n_expanded:', dsl_obj.n_expanded)
+# print('n_opened:', dsl_obj.n_opened)
+# print('n_reopened:', dsl_obj.n_reopened)
+# print('n_final_open:', dsl_obj.open.count)
+
 
 # plot
-plot_dyno = True # False True
-plotter = Plotter(model, plot_dyno)
-plotter.plot_solution(dsl_obj.sol)
+name = 'sim-2'
+do_animate = False  # True - False
+if not do_animate:
+    plot_dyno = True
+    plotter = Plotter(model, plot_dyno)
+    name = name + '.png'
+    pic_name = os.path.join(script_directory, 'Results/'+name) 
+    plotter.plot_solution(dsl_obj.sol)
+    plotter.fig.savefig(pic_name)
+else:
+    plot_dyno = False
+    plotter = Plotter(model, plot_dyno)
+    name = name + '.gif'
+    pic_name = os.path.join(script_directory, 'Results/'+name) 
+    plotter.plot_anim(dsl_obj.sol)
+    plotter.anim.save(pic_name, fps=4)
 plt.show()
-
-# # animation
-# plot_dyno = False # False True
-# plotter = Plotter(model, plot_dyno)
-# plotter.plot_anim(dsl_obj.sol)
-# plotter.anim.save('sim-5-dy.gif', fps=4)
-# plt.show()
