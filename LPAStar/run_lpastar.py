@@ -27,20 +27,36 @@ eval = Evaluate(lpas_obj.sol)
 lpas_obj.sol.proc_time = round(lpas_obj.sol.proc_time, 3)
 
 # results
+print(' ----------- results ------------')
 print('nodes:', lpas_obj.sol.nodes)
 print('dirs:', lpas_obj.sol.dirs)
-print('turns:', eval.path_turns, '      |||  time:', lpas_obj.sol.proc_time)
-print('length:', eval.path_length, '    |||  smoothness:', eval.smoothness) 
+print('time:', lpas_obj.sol.proc_time)
+print('length:', eval.path_length)
+print('turns:', eval.path_turns)
+print('smoothness:', eval.smoothness)
+print(' --------------------------------')
+# print('n_expanded:', lpas_obj.n_expanded)
+# print('n_open:', lpas_obj.open.count)
+# print('n_reopened:', lpas_obj.n_reopened)
+# print('n_closed:', lpas_obj.closed.count)
+# print('n_final_open:', lpas_obj.open.count-lpas_obj.closed.count)
+
 
 # plot
-plot_dyno = True # False True
-plotter = Plotter(model, plot_dyno)
-plotter.plot_solution(lpas_obj.sol)
+name = 'sim-2'
+do_animate = True  # True - False
+if not do_animate:
+    plot_dyno = True
+    plotter = Plotter(model, plot_dyno)
+    name = name + '.png'
+    pic_name = os.path.join(script_directory, 'Results/'+name) 
+    plotter.plot_solution(lpas_obj.sol)
+    plotter.fig.savefig(pic_name)
+else:
+    plot_dyno = False
+    plotter = Plotter(model, plot_dyno)
+    name = name + '.gif'
+    pic_name = os.path.join(script_directory, 'Results/'+name) 
+    plotter.plot_anim(lpas_obj.sol)
+    plotter.anim.save(pic_name, fps=4)
 plt.show()
-
-# # animation
-# plot_dyno = False # False True
-# plotter = Plotter(model, plot_dyno)
-# plotter.plot_anim(lpas_obj.sol)
-# plotter.anim.save('sim-1.gif', fps=4)
-# plt.show()
