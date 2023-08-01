@@ -35,16 +35,15 @@ print('length:', eval.path_length)
 print('turns:', eval.path_turns)
 print('smoothness:', eval.smoothness)
 print(' --------------------------------')
-# print('n_expanded:', lpas_obj.n_expanded)
-# print('n_open:', lpas_obj.open.count)
-# print('n_reopened:', lpas_obj.n_reopened)
-# print('n_closed:', lpas_obj.closed.count)
-# print('n_final_open:', lpas_obj.open.count-lpas_obj.closed.count)
+print('n_expanded:', lpas_obj.n_expanded)
+print('n_opened:', lpas_obj.n_opened)
+print('n_reopened:', lpas_obj.n_reopened)
+print('n_final_open:', lpas_obj.open.count)
 
 
 # plot
 name = 'sim-2'
-do_animate = True  # True - False
+do_animate = False  # True - False
 if not do_animate:
     plot_dyno = True
     plotter = Plotter(model, plot_dyno)

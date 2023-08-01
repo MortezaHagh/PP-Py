@@ -7,7 +7,13 @@ from common.cal_distance import cal_distance
 
 class LPAStar:
     def __init__(self, model):
-
+        
+        # stats
+        self.n_opened = 0
+        self.n_reopened = 0
+        self.n_expanded = 0
+        self.n_final_open = 0
+        
         # initialize
         self.model = model
         top_node = self.create_top_node()
@@ -95,16 +101,19 @@ class LPAStar:
     def update_vertex(self, update_list):
         for inode in update_list:
             if inode != self.model.start_node:
+                self.n_expanded += 1
                 pred = self.model.predecessors[inode]
                 pred_c = self.model.pred_cost[inode]
                 pred_g = np.array(self.G[pred])
                 self.RHS[inode] = min(pred_g+pred_c)
 
             open_nodes = [op.node for op in self.open.list]
+            flag_reopen = False
             if inode in open_nodes:
                 ind = open_nodes.index(inode)
                 self.open.list.pop(ind)
                 self.open.count -= 1
+                flag_reopen = True
 
             if self.G[inode] != self.RHS[inode]:
                 self.open.count += 1
@@ -118,6 +127,9 @@ class LPAStar:
                 op.key = [c + h_cost, c]
                 op.ind = self.open.count
                 self.open.list.append(op)
+                self.n_opened += 1
+                if flag_reopen:
+                    self.n_reopened +=1
 
     def update_map(self, t):
         for i, do_t in enumerate(self.model.dynamic_obsts.t):
