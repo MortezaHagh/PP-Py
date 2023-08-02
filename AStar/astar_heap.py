@@ -4,6 +4,7 @@ from support import Open, Sol
 from support import Closed, TopNode
 from common.angle_diff import angle_diff
 from common.cal_distance import cal_distance
+from heapq import heappush, heappop
 
 
 class AStar:
@@ -23,10 +24,15 @@ class AStar:
         self.model = model
         self.closed = Closed()
         top_node = self.create_top_node()
-        self.open = Open(top_node)
-        self.closed.count += 1
-        self.closed.nodes.append(top_node.node)
         self.top_node = top_node
+        self.closed = [0 for i in range(model.nodes.count)]
+        self.parents = [-1 for i in range(model.nodes.count)]
+        self.fcost = [-1 for i in range(model.nodes.count)]
+        self.fcost[top_node.node] = top_node.f_cost
+        self.parents[top_node.node] = top_node.p_node
+        self.closed[top_node.node] = 1
+
+        self.heap_open = [((top_node.f_cost, -top_node.g_cost, top_node.h_cost, self.n_opened), top_node)]
 
         # start process time
         self.end_time = 0
@@ -58,15 +64,16 @@ class AStar:
         # create sol
         self.end_time = time.process_time()
         self.create_sol()
-        self.n_closed = len(self.closed.nodes)
-        self.n_final_open = len(self.open.list)
+        self.n_closed = sum(self.closed)
+        self.n_final_open = len(self.heap_open)
+
     # ------------------------------------------------------------
 
     def expand(self):
         feas_neighbors = []
         neghbors = self.model.neighbors[self.top_node.node]
         for neigh in neghbors:
-            if not (neigh.node in self.closed.nodes):
+            if (self.closed[neigh.node]==0):
                 self.n_expanded += 1
                 feas_neighb = TopNode()
                 feas_neighb.dir = neigh.dir
@@ -74,8 +81,8 @@ class AStar:
                 feas_neighb.p_node = self.top_node.node
                 feas_neighb.dir_cost = int(not (self.top_node.dir - neigh.dir)==0)*self.dir_coeff
                 feas_neighb.g_cost = self.top_node.g_cost + neigh.cost + feas_neighb.dir_cost
-                h_cost = cal_distance(self.model.robot.xt, self.model.robot.yt, neigh.x, neigh.y, self.model.dist_type)
-                feas_neighb.f_cost = feas_neighb.g_cost + h_cost*1
+                feas_neighb.h_cost = cal_distance(self.model.robot.xt, self.model.robot.yt, neigh.x, neigh.y, self.model.dist_type)
+                feas_neighb.f_cost = feas_neighb.g_cost + feas_neighb.h_cost*1
                 feas_neighbors.append(feas_neighb)
         return feas_neighbors
 
@@ -83,52 +90,35 @@ class AStar:
         if neighbors==[]:
             # print("empty neighbors!")
             return
+        
         for neigh in neighbors:
-            if neigh.node in self.open.nodes:
-                ind = self.open.nodes.index(neigh.node)
-                if neigh.f_cost < self.open.list[ind].f_cost:
-                    self.n_opened += 1
+            open_flag = False
+            if self.fcost[neigh.node]>0:
+                if neigh.f_cost < self.fcost[neigh.node]:
+                    open_flag = True
                     self.n_reopened += 1
-                    self.open.list[ind] = neigh
-                    self.open.list[ind].ind = ind
+                    self.fcost[neigh.node] = neigh.f_cost
+                    self.parents[neigh.node] = neigh.p_node
             else:
-                self.open.count += 1
+                open_flag = True
+
+            if open_flag:
                 self.n_opened += 1
-                self.open.list.append(neigh)
-                self.open.nodes.append(neigh.node)
-                self.open.list[-1].ind = self.open.count-1
+                self.parents[neigh.node] = neigh.p_node
+                heappush(self.heap_open, ((neigh.f_cost, -neigh.g_cost, neigh.h_cost, -self.n_opened), neigh))
+
 
     def select_top_node(self):
-        inds = [op.ind for op in self.open.list if op.visited==False]
-        if len(inds) < 0:
-            print(" error: Astar failed to find a path, impossible!")
-            raise
-
-        f_costs = [self.open.list[ind].f_cost for ind in inds]
-        if self.model.expand_method == 'random':
-            min_ind = np.argmin(f_costs)
-        elif self.model.expand_method == 'heading':
-            dtheta = [abs(angle_diff(self.top_node.dir, self.open.list[ind].dir)) for ind in inds]
-            costs = [dtheta, f_costs]
-            sorted_inds = np.lexsort(costs)
-            min_ind = sorted_inds[0]
-        top_ind = inds[min_ind]
-        self.open.list[top_ind].visited = True
-        self.top_node = self.open.list[top_ind]
-        self.closed.count += 1
-        self.closed.nodes.append(self.top_node.node)
+        c, top_node = heappop(self.heap_open)
+        self.top_node = top_node
+        self.closed[top_node.node] = 1
 
     def optimal_path(self):
-        i = 1
-        goal_ind = self.top_node.ind
         path_nodes = [self.model.robot.goal_node]
         parent_node = self.top_node.p_node
-        parent_ind = self.open.nodes.index(parent_node)
         while parent_node != self.model.robot.start_node:
             path_nodes.append(parent_node)
-            parent_node = self.open.list[parent_ind].p_node
-            parent_ind = self.open.nodes.index(parent_node)
-            i += 1
+            parent_node = self.parents[parent_node]
 
         path_nodes.append(self.model.robot.start_node)
         path_nodes.reverse()
