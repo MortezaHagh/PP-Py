@@ -3,7 +3,8 @@ import sys
 script_directory = os.path.dirname(os.path.abspath(sys.argv[0]))
 sys.path.append(os.path.join(script_directory, '..'))
 
-from astar import AStar
+# astar - astar_heap
+from astar_heap import AStar
 import matplotlib.pyplot as plt
 from common.plotting import Plotter
 from common.evaluate import Evaluate
@@ -17,7 +18,7 @@ setting = {'adj_type': '4adj',
            'expand_method': 'random'}
 
 # model
-model = CreateAStarModel(setting, has_dynamic_obsts=False, use_rnd=False)
+model = CreateAStarModel(setting, has_dynamic_obsts=False, use_rnd=False, map_id=2)
 
 # dstar lite
 astar_obj = AStar(model)
@@ -36,10 +37,10 @@ print('turns:', eval.path_turns)
 print('smoothness:', eval.smoothness)
 print(' ---------- statistics ---------')
 print('n_expanded:', astar_obj.n_expanded)
-print('n_opened:', astar_obj.open.count)
+print('n_opened:', astar_obj.n_opened)
 print('n_reopened:', astar_obj.n_reopened)
-print('n_closed:', astar_obj.closed.count)
-print('n_final_open:', astar_obj.open.count-astar_obj.closed.count)
+print('n_final_open:', astar_obj.n_final_open)
+print('n_closed:', astar_obj.n_closed)
 
 
 # plot
