@@ -6,11 +6,11 @@ Incremental heuristic search methods are used for **dynamic path planning** with
 
 <table style="padding:10px">
   <tr>
-    <td><img src="./DStarLite/results/sim-2.png" alt="1"></td>
-    <td><img src="./DStarLite/results/sim-4.gif" alt="2"></td>
+    <td><img src="./DStarLite/Results/sim-2.png" alt="1"></td>
+    <td><img src="./DStarLite/Results/sim-4.gif" alt="2"></td>
   </tr>
   <tr>
-    <td><img src="./DStarLite/results/sim-5-dy.gif" alt="2"></td>
+    <td><img src="./DStarLite/Results/sim-5-dy.gif" alt="2"></td>
   </tr>
 </table>
 
