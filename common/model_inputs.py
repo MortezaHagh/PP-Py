@@ -1,16 +1,16 @@
 
 
 class ModelInputs():
-    def __init__(self, map_id=1, nr=10):
+    def __init__(self, map_id=1):
         print("Inputs for creating model")
 
         # map_1 - map_2
         if map_id == 1:
             self.map_1()
         elif map_id == 2:
-            self.map_2(nr)
-        elif map_id == 3:
-            self.map_3()
+            self.map_2()
+        # elif map_id == 3:
+        #     self.map_3()
 
     def map_1(self):
 
@@ -42,7 +42,7 @@ class ModelInputs():
         self.yt = 7
 
 
-    def map_3(self):
+    def map_2(self):
 
         # area
         lim = 32
@@ -76,32 +76,6 @@ class ModelInputs():
               [4, 6, 12, 17, 18, 21, 23, 25, 26, 27, 29],
               [9, 15, 18, 25, 26, 28, 30, 31, 21]]
 
-        r1 = [[11, 16], [17, 1]]
-        r2 = [[24, 1], [32, 27]]
-        r3 = [[26, 1], [14, 21]]
-        r4 = [[1, 2], [23, 9]]
-        r5 = [[2, 2], [31, 25]]
-        r6 = [[7, 3], [25, 19]]
-        r7 = [[23, 3], [8, 32]]
-        r8 = [[8, 4], [13, 31]]
-        r9 = [[24, 15], [14, 4]]
-        r10 = [[26, 5], [2, 6]]
-        r11 = [[16, 6], [1, 25]]
-        r12 = [[17, 6], [2, 8]]
-        r13 = [[2, 26], [3, 7]]
-        r14 = [[7, 7], [13, 9]]
-        r15 = [[15, 17], [8, 7]]
-        r16 = [[27, 24], [16, 7]]
-        r17 = [[22, 14], [25, 7]]
-        # r18 = [[6, 9], []]
-        r19 = [[1, 16], [14, 9]]
-        r20 = [[22, 27], [15, 9]]
-        r21 = [[27, 19], [18, 9]]
-        r22 = [[2, 10], [20, 26]]
-        # r23 = [[12, 10], []]
-
-        # r24 = [[], []]
-        # r25 = [[], []]
 
         # obstacles data
         oxy = []
@@ -111,24 +85,16 @@ class ModelInputs():
         ox = [o[0] for o in oxy]
         oy = [o[1] for o in oxy]
 
-        # robots data
-        rr = [r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17, r19, r20, r21, r22]
-        xs = [r[0][0] for r in rr]
-        ys = [r[0][1] for r in rr]
-        xt = [r[1][0] for r in rr]
-        yt = [r[1][1] for r in rr]
-
         # obstacles
         self.x_obst = ox  # ox []
         self.y_obst = oy  # oy []
 
-        # robots
-        self.robot_count = 14
-        self.heading = [0 for i in range(self.robot_count)]
-        self.xs = xs
-        self.ys = ys
-        self.xt = xt
-        self.yt = yt
+        # robot
+        self.heading = 0
+        self.xs = 1
+        self.ys = 1
+        self.xt = 31
+        self.yt = 31
 
     # ---------------------------
     # r10=[12,15,26,31] t10=[]
