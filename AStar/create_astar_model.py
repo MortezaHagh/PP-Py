@@ -5,8 +5,8 @@ from common.create_model_base import CreateBaseModel
 
 
 class CreateAStarModel(CreateBaseModel):
-    def __init__(self, setting, has_dynamic_obsts=False, use_rnd=False):
-        CreateBaseModel.__init__(self, has_dynamic_obsts, use_rnd)
+    def __init__(self, setting, has_dynamic_obsts=False, use_rnd=False, map_id=1):
+        CreateBaseModel.__init__(self, has_dynamic_obsts, use_rnd, map_id=map_id)
         print('Create A* Model from Base Model')
 
         # settings
