@@ -33,7 +33,7 @@ class AStar:
         self.closed[top_node.node] = 1
 
         self.heap_open = []
-        # self.heap_open = [((top_node.f_cost, -top_node.g_cost, top_node.h_cost, self.n_opened), top_node)]
+        # self.heap_open = [((top_node.f_cost, -top_node.g_cost, self.n_opened), top_node)]
 
         # start process time
         self.end_time = 0
@@ -105,7 +105,7 @@ class AStar:
                 self.n_opened += 1
                 self.fcost[neigh.node] = neigh.f_cost
                 self.parents[neigh.node] = neigh.p_node
-                heappush(self.heap_open, ((neigh.f_cost, -neigh.g_cost, neigh.h_cost, -self.n_opened), neigh))
+                heappush(self.heap_open, ((neigh.f_cost, -neigh.g_cost, -self.n_opened), neigh))
 
 
     def select_top_node(self):
