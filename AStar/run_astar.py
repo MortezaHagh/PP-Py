@@ -18,7 +18,7 @@ setting = {'adj_type': '4adj',
            'expand_method': 'random'}
 
 # model
-model = CreateAStarModel(setting, has_dynamic_obsts=False, use_rnd=False, map_id=3)
+model = CreateAStarModel(setting, has_dynamic_obsts=False, use_rnd=False, map_id=2)
 
 # dstar lite
 astar_obj = AStar(model)
@@ -52,7 +52,7 @@ if not do_animate:
     name = name + '.png'
     pic_name = os.path.join(script_directory, 'Results/'+name) 
     plotter.plot_solution(astar_obj.sol)
-    plotter.fig.savefig(pic_name)
+    # plotter.fig.savefig(pic_name)
 else:
     name = name + '.gif'
     pic_name = os.path.join(script_directory, 'Results/'+name) 
