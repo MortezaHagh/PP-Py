@@ -32,7 +32,7 @@ class PEAStar:
         self.fcost = [-1 for i in range(model.nodes.count)]
         self.fcost[top_node.node] = top_node.f_cost
         self.parents[top_node.node] = top_node.p_node
-        self.closed[top_node.node] = 1
+        # self.closed[top_node.node] = 1
 
         # plot
         if self.do_plot:
@@ -98,7 +98,7 @@ class PEAStar:
                 feas_neighb.dir_cost = int(not (self.top_node.dir - neigh.dir) == 0)*self.dir_coeff
                 feas_neighb.g_cost = self.top_node.g_cost + neigh.cost + feas_neighb.dir_cost
                 feas_neighb.h_cost = cal_distance(self.model.robot.xt, self.model.robot.yt, neigh.x, neigh.y, self.model.dist_type)
-                feas_neighb.f_cost = round(feas_neighb.g_cost + feas_neighb.h_cost*1, 5)
+                feas_neighb.f_cost = feas_neighb.g_cost + feas_neighb.h_cost*1
                 # feas_neighbors.append(feas_neighb)
                 heappush(feas_neighbors, ((feas_neighb.f_cost, self.n_expanded), feas_neighb))
         return feas_neighbors
@@ -111,10 +111,10 @@ class PEAStar:
         flag_closed = True
         while len(neighbors) > 0:
             c, neigh = heappop(neighbors)
-            # c0 = round(c[0], 5)
-            cd = round(c[0], 5) - round(self.top_node.f_cost, 5)
-            cd = round(cd, 5)
-            print(cd)
+            # cd = round(c[0], 5) - round(self.top_node.f_cost, 5)
+            # cd = round(cd, 5)
+            cd = neigh.f_cost - self.top_node.f_cost
+            # print(cd)
             if cd < 0:
                 continue
             elif cd == 0:
@@ -135,8 +135,8 @@ class PEAStar:
                 flag_closed = False
                 self.n_opened += 1
                 self.n_reopened += 1
-                # self.fcost[self.top_node.node] =  neigh.f_cost
-                self.top_node.f_cost = round(c[0], 5)  # neigh.f_cost
+                self.fcost[self.top_node.node] =  neigh.f_cost
+                self.top_node.f_cost = neigh.f_cost
                 heappush(self.heap_open, ((self.top_node.f_cost, -self.top_node.g_cost, -self.n_opened), self.top_node))
                 break
         if flag_closed:
