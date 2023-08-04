@@ -13,7 +13,7 @@ class AStar:
 
         # settings
         self.dir_coeff = 0.0
-        self.do_plot = True  # True False
+        self.do_plot = False  # True False
 
         # stats
         self.n_closed = 0
@@ -64,13 +64,13 @@ class AStar:
             # update or extend Open list with the successor nodes
             self.update_open(feas_neighbors)
 
+            # select new Top Node
+            self.select_top_node()
+
             # plot
             if self.do_plot:
                 o_nodes = [o[1].node for o in self.heap_open]
                 self.plotter.update2(self.top_node.node, o_nodes)
-
-            # select new Top Node
-            self.select_top_node()
 
         # optimal paths
         self.path_nodes = self.optimal_path()

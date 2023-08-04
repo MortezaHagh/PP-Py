@@ -6,7 +6,7 @@ import matplotlib.animation as animation
 
 class Plotter:
     def __init__(self, model, plot_dyno=False) -> None:
-        plt.ion()
+        # plt.ion()
         self.model = model
         self.plot_dyno = plot_dyno
         self.do_color = (0.8500, 0.3250, 0.0980)
@@ -100,8 +100,8 @@ class Plotter:
     def update1(self, node):
         x = self.model.nodes.x[node] 
         y = self.model.nodes.y[node]
-        self.line1, = self.ax.plot(x, y, 'o', color=(0,1,1))
-        self.line2, = self.ax.plot(x, y, 'o', color=(0,0,1))
+        self.line1, = self.ax.plot(x, y, 'o', color=(1,0,0), markersize=10)
+        self.line2, = self.ax.plot(x, y, 'o', color=(0,0,1), markersize=8)
 
     def update2(self, node, open_nodes):
        
@@ -110,10 +110,14 @@ class Plotter:
         self.line2.set_xdata(xx)
         self.line2.set_ydata(yy)
 
+        # self.ax.plot(xx, yy, 's', color=(1,1,0), markersize=4)
+
         x = self.model.nodes.x[node] 
         y = self.model.nodes.y[node]
         self.line1.set_xdata(x)
         self.line1.set_ydata(y)
+
+        # self.ax.plot(x, y, 's', color=(1,1,1))
 
         # drawing updated values
         self.fig.canvas.draw()
