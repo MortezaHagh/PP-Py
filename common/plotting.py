@@ -6,7 +6,7 @@ import matplotlib.animation as animation
 
 class Plotter:
     def __init__(self, model, plot_dyno=False) -> None:
-        # plt.ion()
+        plt.ion()
         self.model = model
         self.plot_dyno = plot_dyno
         self.do_color = (0.8500, 0.3250, 0.0980)
@@ -94,30 +94,48 @@ class Plotter:
         self.anim = animation.FuncAnimation(
             self.fig, self.ani_update, init_func=self.ani_init, frames=self.path_len, repeat=False, interval=500, blit=True)
 
-
      # --------------------------------------------------------------------
 
     def update1(self, node):
-        x = self.model.nodes.x[node] 
+        
+        #  top node coordinates
+        x = self.model.nodes.x[node]
         y = self.model.nodes.y[node]
-        self.line1, = self.ax.plot(x, y, 'o', color=(1,0,0), markersize=10)
-        self.line2, = self.ax.plot(x, y, 'o', color=(0,0,1), markersize=8)
+
+        #  all open nodes
+        self.nos = set()
+        self.line3, = self.ax.plot(x, y, 'o', color=(1, 0, 1), markersize=4, label="all open nodes")
+
+        # topnode
+        self.line1, = self.ax.plot(x, y, 'o', color=(1, 0, 0), markersize=10, label="top node")
+
+        # recent open nodes
+        self.line2, = self.ax.plot(x, y, 'o', color=(0, 0, 1), markersize=8, label="latest open nodes")
+
+        # 
+        plt.legend()
+
 
     def update2(self, node, open_nodes):
-       
+
+       # topnode
+        x = self.model.nodes.x[node]
+        y = self.model.nodes.y[node]
+        self.line1.set_xdata(x)
+        self.line1.set_ydata(y)
+
+        # recent open nodes
         xx = [self.model.nodes.x[n] for n in open_nodes]
         yy = [self.model.nodes.y[n] for n in open_nodes]
         self.line2.set_xdata(xx)
         self.line2.set_ydata(yy)
 
-        # self.ax.plot(xx, yy, 's', color=(1,1,0), markersize=4)
-
-        x = self.model.nodes.x[node] 
-        y = self.model.nodes.y[node]
-        self.line1.set_xdata(x)
-        self.line1.set_ydata(y)
-
-        # self.ax.plot(x, y, 's', color=(1,1,1))
+        #  all open nodes
+        self.nos = set(open_nodes).union(self.nos)
+        self.xos = [self.model.nodes.x[n] for n in list(self.nos)]
+        self.yos = [self.model.nodes.y[n] for n in list(self.nos)]
+        self.line3.set_xdata(list(self.xos))
+        self.line3.set_ydata(list(self.yos))
 
         # drawing updated values
         self.fig.canvas.draw()
