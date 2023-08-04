@@ -97,7 +97,7 @@ class Plotter:
      # --------------------------------------------------------------------
 
     def update1(self, node):
-        
+
         #  top node coordinates
         x = self.model.nodes.x[node]
         y = self.model.nodes.y[node]
@@ -112,9 +112,8 @@ class Plotter:
         # recent open nodes
         self.line2, = self.ax.plot(x, y, 'o', color=(0, 0, 1), markersize=8, label="latest open nodes")
 
-        # 
+        #
         plt.legend()
-
 
     def update2(self, node, open_nodes):
 
