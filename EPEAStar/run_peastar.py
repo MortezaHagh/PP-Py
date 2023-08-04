@@ -20,7 +20,7 @@ setting = {'adj_type': '4adj',
 # model
 model = CreateAStarModel(setting, has_dynamic_obsts=False, use_rnd=False, map_id=1)
 
-# dstar lite
+# EPEA*
 pp_obj = EPEAStar(model)
 
 # Evaluate
