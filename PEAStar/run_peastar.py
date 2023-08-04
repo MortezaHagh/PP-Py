@@ -18,7 +18,7 @@ setting = {'adj_type': '4adj',
            'expand_method': 'random'}
 
 # model
-model = CreateAStarModel(setting, has_dynamic_obsts=False, use_rnd=False, map_id=3)
+model = CreateAStarModel(setting, has_dynamic_obsts=False, use_rnd=False, map_id=1)
 
 # dstar lite
 pp_obj = PEAStar(model)
@@ -44,7 +44,7 @@ print('n_closed:', pp_obj.n_closed)
 
 
 # plot
-name = 'sim-2'
+name = 'sim-1'
 plot_dyno = False
 do_animate = False  # True - False
 plotter = Plotter(model, plot_dyno)
