@@ -13,7 +13,7 @@ class PEAStar:
 
         # settings
         self.dir_coeff = 0.0
-        self.do_plot = False  # True False
+        self.do_plot = True  # True False
 
         # stats
         self.n_closed = 0
@@ -42,7 +42,7 @@ class PEAStar:
             self.plotter.update1(self.top_node.node)
 
         self.heap_open = []
-        # self.heap_open = [((top_node.f_cost, -top_node.g_cost, top_node.h_cost, self.n_opened), top_node)]
+        self.heap_open = [((top_node.f_cost, top_node.h_cost, self.n_opened), top_node)]
 
         # start process time
         self.end_time = 0
@@ -58,15 +58,15 @@ class PEAStar:
 
     def astar(self):
         while self.top_node.node != self.model.robot.goal_node:
+            
+            # select new Top Node
+            self.select_top_node()
 
             # finding neighbors (successors)
             feas_neighbors = self.expand()
 
             # update or extend Open list with the successor nodes
             self.update_open(feas_neighbors)
-
-            # select new Top Node
-            self.select_top_node()
 
              # plot
             if self.do_plot:
@@ -101,8 +101,8 @@ class PEAStar:
                 feas_neighb.g_cost = self.top_node.g_cost + neigh.cost + feas_neighb.dir_cost
                 feas_neighb.h_cost = cal_distance(self.model.robot.xt, self.model.robot.yt, neigh.x, neigh.y, self.model.dist_type)
                 feas_neighb.f_cost = feas_neighb.g_cost + feas_neighb.h_cost*1
-                if feas_neighb.f_cost != self.top_node.f_cost:
-                    if feas_neighb.f_cost > self.top_node.f_cost:
+                if round(feas_neighb.f_cost, 5) != round(self.top_node.f_cost, 5):
+                    if round(feas_neighb.f_cost, 5) > round(self.top_node.f_cost, 5):
                         self.FN = min(self.FN, feas_neighb.f_cost)
                 else:
                     self.n_expanded += 1
@@ -110,7 +110,8 @@ class PEAStar:
         return feas_neighbors
 
     def update_open(self, neighbors):
-
+        if len(neighbors)==0:
+            self.closed[self.top_node.node] = 1
         while len(neighbors) > 0:
             c, neigh = heappop(neighbors)
             open_flag = False
@@ -125,7 +126,7 @@ class PEAStar:
                 self.n_opened += 1
                 self.fcost[neigh.node] = neigh.f_cost
                 self.parents[neigh.node] = neigh.p_node
-                heappush(self.heap_open, ((neigh.f_cost, -neigh.g_cost, -self.n_opened), neigh))
+                heappush(self.heap_open, ((neigh.f_cost, neigh.h_cost, -self.n_opened), neigh))
 
         if self.FN is np.inf:
             self.closed[self.top_node.node] = 1
@@ -134,7 +135,7 @@ class PEAStar:
             self.n_reopened += 1
             # self.fcost[self.top_node.node] = self.FN
             self.top_node.f_cost = self.FN
-            heappush(self.heap_open, ((self.top_node.f_cost, -self.top_node.g_cost, -self.n_opened), self.top_node))
+            heappush(self.heap_open, ((self.top_node.f_cost, self.top_node.h_cost, self.n_opened), self.top_node))
 
     def select_top_node(self):
         c, top_node = heappop(self.heap_open)
@@ -164,6 +165,7 @@ class PEAStar:
         h_cost = cal_distance(self.model.robot.xs, self.model.robot.ys,
                               self.model.robot.xt, self.model.robot.yt, self.model.dist_type)
         top_node.g_cost = 0
+        top_node.h_cost = h_cost
         top_node.f_cost = h_cost
         return top_node
 

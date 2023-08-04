@@ -6,7 +6,7 @@ import matplotlib.animation as animation
 
 class Plotter:
     def __init__(self, model, plot_dyno=False) -> None:
-        plt.ion()
+        # plt.ion()
         self.model = model
         self.plot_dyno = plot_dyno
         self.do_color = (0.8500, 0.3250, 0.0980)

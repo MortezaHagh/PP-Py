@@ -36,12 +36,12 @@ class AStar:
 
         # plot
         if self.do_plot:
+            self.o_nodes = []
             plot_dyno = False  # False True
             self.plotter = Plotter(model, plot_dyno)
             self.plotter.update1(self.top_node.node)
 
-        self.heap_open = []
-        # self.heap_open = [((top_node.f_cost, -top_node.g_cost, self.n_opened), top_node)]
+        self.heap_open = [((top_node.f_cost, -top_node.g_cost, self.n_opened), top_node)]
 
         # start process time
         self.end_time = 0
@@ -58,19 +58,19 @@ class AStar:
     def astar(self):
         while self.top_node.node != self.model.robot.goal_node:
 
+            # select new Top Node
+            self.select_top_node()
+
             # finding neighbors (successors)
             feas_neighbors = self.expand()
 
             # update or extend Open list with the successor nodes
             self.update_open(feas_neighbors)
 
-            # select new Top Node
-            self.select_top_node()
-
             # plot
             if self.do_plot:
-                o_nodes = [o[1].node for o in self.heap_open]
-                self.plotter.update2(self.top_node.node, o_nodes)
+                self.plotter.update2(self.top_node.node, self.o_nodes)
+                self.o_nodes = []
 
         # optimal paths
         self.path_nodes = self.optimal_path()
@@ -121,6 +121,9 @@ class AStar:
                 self.fcost[neigh.node] = neigh.f_cost
                 self.parents[neigh.node] = neigh.p_node
                 heappush(self.heap_open, ((neigh.f_cost, -neigh.g_cost, -self.n_opened), neigh))
+                
+                if self.do_plot:
+                    self.o_nodes.append(neigh.node)
 
     def select_top_node(self):
         c, top_node = heappop(self.heap_open)
