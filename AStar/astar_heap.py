@@ -74,6 +74,8 @@ class AStar:
         feas_neighbors = []
         neghbors = self.model.neighbors[self.top_node.node]
         for neigh in neghbors:
+            if neigh.node==self.top_node.p_node:
+                continue
             if (self.closed[neigh.node]==0):
                 self.n_expanded += 1
                 feas_neighb = TopNode()
