@@ -74,6 +74,8 @@ class PEAStar:
         feas_neighbors = []
         neghbors = self.model.neighbors[self.top_node.node]
         for neigh in neghbors:
+            if neigh.node==self.top_node.p_node:
+                continue
             if (self.closed[neigh.node]==0):
                 self.n_expanded += 1
                 feas_neighb = TopNode()
@@ -83,8 +85,9 @@ class PEAStar:
                 feas_neighb.dir_cost = int(not (self.top_node.dir - neigh.dir)==0)*self.dir_coeff
                 feas_neighb.g_cost = self.top_node.g_cost + neigh.cost + feas_neighb.dir_cost
                 feas_neighb.h_cost = cal_distance(self.model.robot.xt, self.model.robot.yt, neigh.x, neigh.y, self.model.dist_type)
-                feas_neighb.f_cost = feas_neighb.g_cost + feas_neighb.h_cost*1
-                feas_neighbors.append(feas_neighb)
+                feas_neighb.f_cost = round(feas_neighb.g_cost + feas_neighb.h_cost*1, 5)
+                # feas_neighbors.append(feas_neighb)
+                heappush(feas_neighbors, ((feas_neighb.f_cost, self.n_expanded), feas_neighb))
         return feas_neighbors
 
     def update_open(self, neighbors):
@@ -92,26 +95,46 @@ class PEAStar:
             # print("empty neighbors!")
             return
         
-        for neigh in neighbors:
-            open_flag = False
-            if self.fcost[neigh.node]>0:
-                if neigh.f_cost < self.fcost[neigh.node]:
+        flag_closed = True
+        while len(neighbors)>0:
+            c, neigh = heappop(neighbors)
+            # c0 = round(c[0], 5)
+            cd = round(c[0], 5) - round(self.top_node.f_cost, 5)
+            cd = round(cd, 5)
+            print(cd)
+            if cd<0:
+                continue
+            elif cd==0:
+                open_flag = False
+                if self.fcost[neigh.node]>0:
+                    if neigh.f_cost < self.fcost[neigh.node]:
+                        open_flag = True
+                        self.n_reopened += 1
+                else:
                     open_flag = True
-                    self.n_reopened += 1
-            else:
-                open_flag = True
 
-            if open_flag:
+                if open_flag:
+                    self.n_opened += 1
+                    self.fcost[neigh.node] = neigh.f_cost
+                    self.parents[neigh.node] = neigh.p_node
+                    heappush(self.heap_open, ((neigh.f_cost, -neigh.g_cost, -self.n_opened), neigh))
+            else:
+                flag_closed = False
                 self.n_opened += 1
-                self.fcost[neigh.node] = neigh.f_cost
-                self.parents[neigh.node] = neigh.p_node
-                heappush(self.heap_open, ((neigh.f_cost, -neigh.g_cost, neigh.h_cost, -self.n_opened), neigh))
+                self.n_reopened += 1
+                # self.fcost[self.top_node.node] =  neigh.f_cost
+                self.top_node.f_cost = round(c[0], 5) # neigh.f_cost
+                heappush(self.heap_open, ((self.top_node.f_cost, -self.top_node.g_cost, -self.n_opened), self.top_node))
+                break
+        if flag_closed:
+            self.closed[self.top_node.node] = 1
+
 
 
     def select_top_node(self):
         c, top_node = heappop(self.heap_open)
         self.top_node = top_node
-        self.closed[top_node.node] = 1
+        # self.closed[top_node.node] = 1
 
     def optimal_path(self):
         path_nodes = [self.model.robot.goal_node]
