@@ -49,14 +49,14 @@ class EPEAStar:
         start_time = time.process_time()
 
         # astar
-        self.astar()
+        self.epe_astar()
 
         # end process time
         self.sol.proc_time = self.end_time - start_time
 
     # ------------------------------------------------------------
 
-    def astar(self):
+    def epe_astar(self):
         while self.top_node.node != self.model.robot.goal_node:
             
             # select new Top Node
