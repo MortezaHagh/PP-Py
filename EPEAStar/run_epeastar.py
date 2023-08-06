@@ -4,7 +4,7 @@ script_directory = os.path.dirname(os.path.abspath(sys.argv[0]))
 sys.path.append(os.path.join(script_directory, '..'))
 
 # peastar - peaastar_heap
-from peaastar import PEAStar
+from epeastar import EPEAStar
 import matplotlib.pyplot as plt
 from common.plotting import Plotter
 from common.evaluate import Evaluate
@@ -20,8 +20,8 @@ setting = {'adj_type': '4adj',
 # model
 model = CreateAStarModel(setting, has_dynamic_obsts=False, use_rnd=False, map_id=1)
 
-# PEA*
-pp_obj = PEAStar(model)
+# EPEA*
+pp_obj = EPEAStar(model)
 
 # Evaluate
 eval = Evaluate(pp_obj.sol)
