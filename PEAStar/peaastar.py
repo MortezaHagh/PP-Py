@@ -2,10 +2,10 @@ import time
 import numpy as np
 from support import Open, Sol
 from support import Closed, TopNode
-from common.angle_diff import angle_diff
-from common.cal_distance import cal_distance
 from heapq import heappush, heappop
 from common.plotting import Plotter
+from common.angle_diff import angle_diff
+from common.cal_distance import cal_distance
 
 
 class PEAStar:
@@ -58,7 +58,7 @@ class PEAStar:
 
     def pe_astar(self):
         while self.top_node.node != self.model.robot.goal_node:
-            
+
             # select new Top Node
             self.select_top_node()
 
@@ -89,8 +89,11 @@ class PEAStar:
         feas_neighbors = []
         neghbors = self.model.neighbors[self.top_node.node]
         for neigh in neghbors:
+            
+            # dont consider parent
             if neigh.node == self.top_node.p_node:
                 continue
+            
             if (self.closed[neigh.node] == 0):
                 self.n_expanded += 1
                 feas_neighb = TopNode()
@@ -101,6 +104,7 @@ class PEAStar:
                 feas_neighb.g_cost = self.top_node.g_cost + neigh.cost + feas_neighb.dir_cost
                 feas_neighb.h_cost = cal_distance(self.model.robot.xt, self.model.robot.yt, neigh.x, neigh.y, self.model.dist_type)
                 feas_neighb.f_cost = feas_neighb.g_cost + feas_neighb.h_cost*1
+                # expand successors with f_cost equal to parent's f_cost
                 if round(feas_neighb.f_cost, 5) != round(self.top_node.f_cost, 5):
                     if round(feas_neighb.f_cost, 5) > round(self.top_node.f_cost, 5):
                         self.FN = min(self.FN, feas_neighb.f_cost)
@@ -110,7 +114,7 @@ class PEAStar:
         return feas_neighbors
 
     def update_open(self, neighbors):
-        if len(neighbors)==0:
+        if len(neighbors) == 0:
             self.closed[self.top_node.node] = 1
         while len(neighbors) > 0:
             c, neigh = heappop(neighbors)
@@ -131,22 +135,20 @@ class PEAStar:
                     self.o_nodes.append(neigh.node)
 
         if self.FN is np.inf:
+            # close the topnode
             self.closed[self.top_node.node] = 1
         else:
+            # reopen topnode with new f cost
             self.n_opened += 1
             self.n_reopened += 1
-            # self.fcost[self.top_node.node] = self.FN
             self.top_node.f_cost = self.FN
             heappush(self.heap_open, ((self.top_node.f_cost, self.top_node.h_cost, self.n_opened), self.top_node))
             if self.do_plot:
-                    self.o_nodes.append(self.top_node.node)
-
+                self.o_nodes.append(self.top_node.node)
 
     def select_top_node(self):
         c, top_node = heappop(self.heap_open)
         self.top_node = top_node
-        # self.closed[top_node.node] = 1
-
 
     def optimal_path(self):
         path_nodes = [self.model.robot.goal_node]

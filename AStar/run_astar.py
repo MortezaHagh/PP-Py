@@ -25,6 +25,7 @@ model = CreateAStarModel(setting, has_dynamic_obsts=False, use_rnd=False, map_id
 astar_obj = AStar(model)
 # -----------------------------------
 
+
 # Evaluate
 eval = Evaluate(astar_obj.sol)
 astar_obj.sol.proc_time = round(astar_obj.sol.proc_time, 4)

@@ -1,11 +1,11 @@
 import time
 import numpy as np
-from support import Open, Sol
+from support import Sol
 from support import Closed, TopNode
-from common.angle_diff import angle_diff
-from common.cal_distance import cal_distance
 from heapq import heappush, heappop
 from common.plotting import Plotter
+from common.angle_diff import angle_diff
+from common.cal_distance import cal_distance
 
 
 class EPEAStar:
@@ -61,7 +61,7 @@ class EPEAStar:
 
     def epe_astar(self):
         while self.top_node.node != self.model.robot.goal_node:
-            
+
             # select new Top Node
             self.select_top_node()
 
@@ -71,7 +71,7 @@ class EPEAStar:
             # update or extend Open list with the successor nodes
             self.update_open(feas_neighbors)
 
-             # plot
+            # plot
             if self.do_plot:
                 self.plotter.update2(self.top_node.node, self.o_nodes)
                 self.o_nodes = []
@@ -93,40 +93,40 @@ class EPEAStar:
         node = self.top_node.node
         succ_inds = self.succ_inds[node][:]
 
-        # 
-        if len(succ_inds)>0:
+        # select df
+        if len(succ_inds) > 0:
             df = self.nodes_df[node].pop(0)
             self.FN = self.top_node.f_cost + df
         else:
             return feas_neighbors
-        
-        #
+
+        # expand based on the df
         for i in self.succ_inds[node]:
             s = self.succs[node][i]
-            
+
             # dont consider parent
             if s.node == self.top_node.p_node:
                 succ_inds.remove(i)
                 continue
-            
-            # selected osf
+
+            # selected successor
             if s.f_cost == df:
                 if (self.closed[s.node] == 0):
                     self.n_expanded += 1
                     s.g_cost += self.top_node.g_cost
-                    s.f_cost += self.top_node.f_cost 
+                    s.f_cost += self.top_node.f_cost
                     heappush(feas_neighbors, ((s.f_cost, self.n_expanded), s))
                 succ_inds.remove(i)
-        
-        #
+
+        # update succ_inds
         self.succ_inds[node] = succ_inds
 
         return feas_neighbors
 
-
     def update_open(self, neighbors):
-        if len(neighbors)==0:
+        if len(neighbors) == 0:
             self.closed[self.top_node.node] = 1
+
         while len(neighbors) > 0:
             c, neigh = heappop(neighbors)
             open_flag = False
@@ -146,20 +146,20 @@ class EPEAStar:
                     self.o_nodes.append(neigh.node)
 
         if self.FN is np.inf:
+            # close the topnode
             self.closed[self.top_node.node] = 1
         else:
+            # reopen topnode with new f cost
             self.n_opened += 1
             self.n_reopened += 1
             self.top_node.f_cost = self.FN
             heappush(self.heap_open, ((self.top_node.f_cost, self.top_node.h_cost, self.n_opened), self.top_node))
             if self.do_plot:
-                    self.o_nodes.append(self.top_node.node)
-    
-    
+                self.o_nodes.append(self.top_node.node)
+
     def select_top_node(self):
         c, top_node = heappop(self.heap_open)
         self.top_node = top_node
-        # self.closed[top_node.node] = 1
 
     def optimal_path(self):
         path_nodes = [self.model.robot.goal_node]
@@ -179,7 +179,7 @@ class EPEAStar:
         self.succ_inds = [[i for i in range(len(neighs))] for neighs in self.model.neighbors]
         self.succs = [[TopNode() for n in neighs] for neighs in self.model.neighbors]
         self.nodes_df = [set() for n in range(self.model.nodes.count)]
-                        
+
         for node in range(self.model.nodes.count):
             if node == self.model.robot.goal_node:
                 self.succ_inds[node] = []
@@ -198,7 +198,7 @@ class EPEAStar:
                 self.succs[node][i].node = n.node
                 self.succs[node][i].g_cost = dg
                 self.succs[node][i].h_cost = h
-                self.succs[node][i].f_cost = round(df, 5) # round(df, 5)  df
+                self.succs[node][i].f_cost = round(df, 5)  # round(df, 5)  df
                 dfn.append(round(df, 5))  # round(df, 5)  df
             self.nodes_df[node] = list(set(sorted(dfn)))
 

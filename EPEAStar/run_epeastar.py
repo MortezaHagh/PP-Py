@@ -20,8 +20,11 @@ setting = {'adj_type': '4adj',
 # model
 model = CreateAStarModel(setting, has_dynamic_obsts=False, use_rnd=False, map_id=1)
 
+
 # EPEA*
 pp_obj = EPEAStar(model)
+# ----------------------------
+
 
 # Evaluate
 eval = Evaluate(pp_obj.sol)

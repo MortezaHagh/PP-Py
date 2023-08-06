@@ -1,19 +1,19 @@
 import time
 import numpy as np
+from support import TopNode
 from support import Open, Sol
-from support import Start, TopNode
 from common.cal_distance import cal_distance
 
 
 class LPAStar:
     def __init__(self, model):
-        
+
         # stats
         self.n_opened = 0
         self.n_reopened = 0
         self.n_expanded = 0
         self.n_final_open = 0
-        
+
         # initialize
         self.model = model
         top_node = self.create_top_node()
@@ -129,7 +129,7 @@ class LPAStar:
                 self.open.list.append(op)
                 self.n_opened += 1
                 if flag_reopen:
-                    self.n_reopened +=1
+                    self.n_reopened += 1
 
     def update_map(self, t):
         for i, do_t in enumerate(self.model.dynamic_obsts.t):

@@ -19,8 +19,11 @@ setting = {'adj_type': '8adj',
 # model
 model = CreateLPAStarModel(setting, has_dynamic_obsts=True, use_rnd=False, map_id=1)
 
+
 # LPA*
 lpas_obj = LPAStar(model)
+# ------------------------------------
+
 
 # Evaluate
 eval = Evaluate(lpas_obj.sol)

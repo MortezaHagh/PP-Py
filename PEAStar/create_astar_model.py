@@ -1,6 +1,5 @@
 import numpy as np
 from support import Neighbor
-import matplotlib.pyplot as plt
 from common.create_model_base import CreateBaseModel
 
 
@@ -46,13 +45,16 @@ class CreateAStarModel(CreateBaseModel):
                     if (self.map.x_min <= newx <= self.map.x_max) and (self.map.y_min <= newy <= self.map.y_max):
                         new_node = inode+ix+iy*(self.map.nx)
 
+                        # check if it is obstacle
                         if not new_node in self.obsts.nodes:
-
+                            
+                            # edge cost
                             if ix != 0 and iy != 0:
                                 cost = edge_len
                             else:
                                 cost = 1
 
+                            # new neighbor
                             new_neighb = Neighbor()
                             new_neighb.x = newx
                             new_neighb.y = newy
