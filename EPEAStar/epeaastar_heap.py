@@ -96,7 +96,7 @@ class EPEAStar:
 
         # 
         if len(succ_inds)>0:
-            df = self.nodes_df[node].pop()
+            df = self.nodes_df[node].pop(0)
             self.FN = self.top_node.f_cost + df
         else:
             return feas_neighbors
@@ -183,15 +183,15 @@ class EPEAStar:
             for i, n in enumerate(self.model.neighbors[node]):
                 dg = n.cost
                 h = cal_distance(self.model.robot.xt, self.model.robot.yt, n.x, n.y, self.model.dist_type)
-                dh = hn - h
+                dh = h - hn
                 df = dg + dh
                 self.succs[node][i].p_node = node
                 self.succs[node][i].node = n.node
                 self.succs[node][i].g_cost = dg
                 self.succs[node][i].h_cost = h
-                self.succs[node][i].f_cost = df # round(dh, 5) 
-                dfn.append(df)
-            self.nodes_df[node] = list(set(dfn))
+                self.succs[node][i].f_cost = round(df, 5) # round(df, 5)  df
+                dfn.append(round(df, 5))  # round(df, 5)  df
+            self.nodes_df[node] = list(set(sorted(dfn)))
 
     # ------------------------------------------------------------
 
