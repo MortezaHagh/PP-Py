@@ -144,7 +144,7 @@ class EPEAStar:
                 heappush(self.heap_open, ((neigh.f_cost, neigh.h_cost, -self.n_opened), neigh))
                 if self.do_plot:
                     self.o_nodes.append(neigh.node)
-                    
+
         if self.FN is np.inf:
             self.closed[self.top_node.node] = 1
         else:
@@ -181,6 +181,11 @@ class EPEAStar:
         self.nodes_df = [set() for n in range(self.model.nodes.count)]
                         
         for node in range(self.model.nodes.count):
+            if node == self.model.robot.goal_node:
+                self.succ_inds[node] = []
+                self.nodes_df[node] = []
+                self.succs[node] = []
+                continue
             x, y = self.model.nodes.x[node], self.model.nodes.y[node]
             hn = cal_distance(self.model.robot.xt, self.model.robot.yt, x, y, self.model.dist_type)
             dfn = []
