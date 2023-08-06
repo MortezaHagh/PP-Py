@@ -4,7 +4,7 @@ script_directory = os.path.dirname(os.path.abspath(sys.argv[0]))
 sys.path.append(os.path.join(script_directory, '..'))
 
 # peastar - peaastar_heap
-from epeaastar_heap import EPEAStar
+from epeastar_heap import EPEAStar
 import matplotlib.pyplot as plt
 from common.plotting import Plotter
 from common.evaluate import Evaluate
