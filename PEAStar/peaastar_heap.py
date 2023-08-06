@@ -93,6 +93,7 @@ class PEAStar:
             if neigh.node == self.top_node.p_node:
                 continue
             if (self.closed[neigh.node] == 0):
+                self.n_expanded += 1
                 feas_neighb = TopNode()
                 feas_neighb.dir = neigh.dir
                 feas_neighb.node = neigh.node
@@ -105,7 +106,7 @@ class PEAStar:
                     if round(feas_neighb.f_cost, 5) > round(self.top_node.f_cost, 5):
                         self.FN = min(self.FN, feas_neighb.f_cost)
                 else:
-                    self.n_expanded += 1
+                    # self.n_expanded += 1
                     heappush(feas_neighbors, ((feas_neighb.f_cost, self.n_expanded), feas_neighb))
         return feas_neighbors
 
@@ -157,7 +158,6 @@ class PEAStar:
 
     def create_top_node(self):
         top_node = TopNode()
-        top_node.ind = 0
         top_node.visited = True
         top_node.dir = self.model.robot.dir
         top_node.node = self.model.robot.start_node

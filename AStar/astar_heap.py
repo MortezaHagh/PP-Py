@@ -145,7 +145,6 @@ class AStar:
 
     def create_top_node(self):
         top_node = TopNode()
-        top_node.ind = 0
         top_node.visited = True
         top_node.dir = self.model.robot.dir
         top_node.node = self.model.robot.start_node

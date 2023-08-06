@@ -18,7 +18,7 @@ setting = {'adj_type': '4adj',
            'expand_method': 'random'}
 
 # model
-model = CreateAStarModel(setting, has_dynamic_obsts=False, use_rnd=False, map_id=2)
+model = CreateAStarModel(setting, has_dynamic_obsts=False, use_rnd=False, map_id=1)
 
 # A*
 astar_obj = AStar(model)
