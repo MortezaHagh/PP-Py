@@ -23,9 +23,9 @@ class TopNode(object):
         self.node = 0
         self.p_node = 0
         self.dir_cost = 0
-        self.g_cost = 10000
-        self.h_cost = 10000
-        self.f_cost = 10000
+        self.g_cost = np.inf
+        self.h_cost = np.inf
+        self.f_cost = np.inf
         self.visited = False
 
 
