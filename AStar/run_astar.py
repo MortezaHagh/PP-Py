@@ -20,8 +20,10 @@ setting = {'adj_type': '4adj',
 # model
 model = CreateAStarModel(setting, has_dynamic_obsts=False, use_rnd=False, map_id=1)
 
-# A*
+
+# A* --------------------------------
 astar_obj = AStar(model)
+# -----------------------------------
 
 # Evaluate
 eval = Evaluate(astar_obj.sol)

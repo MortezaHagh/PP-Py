@@ -1,11 +1,11 @@
 import time
 import numpy as np
-from support import Open, Sol
+from support import Sol
 from support import Closed, TopNode
-from common.angle_diff import angle_diff
-from common.cal_distance import cal_distance
 from heapq import heappush, heappop
 from common.plotting import Plotter
+from common.angle_diff import angle_diff
+from common.cal_distance import cal_distance
 
 
 class AStar:
@@ -102,10 +102,8 @@ class AStar:
                 feas_neighbors.append(feas_neighb)
         return feas_neighbors
 
-
     def update_open(self, neighbors):
         if neighbors == []:
-            # print("empty neighbors!")
             return
 
         for neigh in neighbors:
@@ -122,10 +120,9 @@ class AStar:
                 self.fcost[neigh.node] = neigh.f_cost
                 self.parents[neigh.node] = neigh.p_node
                 heappush(self.heap_open, ((neigh.f_cost, -neigh.g_cost, -self.n_opened), neigh))
-                
+
                 if self.do_plot:
                     self.o_nodes.append(neigh.node)
-
 
     def select_top_node(self):
         c, top_node = heappop(self.heap_open)

@@ -12,7 +12,7 @@ class AStar:
         # settings
         self.dir_coeff = 0.0
 
-        # stats
+        # statistics
         self.n_closed = 0
         self.n_opened = 0
         self.n_expanded = 0
@@ -60,6 +60,7 @@ class AStar:
         self.create_sol()
         self.n_closed = len(self.closed.nodes)
         self.n_final_open = len(self.open.list)
+
     # ------------------------------------------------------------
 
     def expand(self):
@@ -72,7 +73,7 @@ class AStar:
                 feas_neighb.dir = neigh.dir
                 feas_neighb.node = neigh.node
                 feas_neighb.p_node = self.top_node.node
-                feas_neighb.dir_cost = int(not (self.top_node.dir - neigh.dir)==0)*self.dir_coeff
+                feas_neighb.dir_cost = int(not (self.top_node.dir - neigh.dir) == 0)*self.dir_coeff
                 feas_neighb.g_cost = self.top_node.g_cost + neigh.cost + feas_neighb.dir_cost
                 h_cost = cal_distance(self.model.robot.xt, self.model.robot.yt, neigh.x, neigh.y, self.model.dist_type)
                 feas_neighb.f_cost = feas_neighb.g_cost + h_cost*1
@@ -80,18 +81,20 @@ class AStar:
         return feas_neighbors
 
     def update_open(self, neighbors):
-        if neighbors==[]:
-            # print("empty neighbors!")
+        if neighbors == []:
             return
+
         for neigh in neighbors:
             if neigh.node in self.open.nodes:
                 ind = self.open.nodes.index(neigh.node)
                 if neigh.f_cost < self.open.list[ind].f_cost:
+                    # update open
                     self.n_opened += 1
                     self.n_reopened += 1
                     self.open.list[ind] = neigh
                     self.open.list[ind].ind = ind
             else:
+                # expand open
                 self.open.count += 1
                 self.n_opened += 1
                 self.open.list.append(neigh)
@@ -99,7 +102,7 @@ class AStar:
                 self.open.list[-1].ind = self.open.count-1
 
     def select_top_node(self):
-        inds = [op.ind for op in self.open.list if op.visited==False]
+        inds = [op.ind for op in self.open.list if op.visited == False]
         if len(inds) < 0:
             print(" error: Astar failed to find a path, impossible!")
             raise
