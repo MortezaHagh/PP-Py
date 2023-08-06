@@ -8,12 +8,12 @@ from common.cal_distance import cal_distance
 class DStarLite:
     def __init__(self, model):
 
-         # stats
+        # stats
         self.n_opened = 0
         self.n_reopened = 0
         self.n_expanded = 0
         self.n_final_open = 0
-        
+
         # initialize
         self.model = model
         top_node = self.create_top_node()
@@ -146,15 +146,14 @@ class DStarLite:
                 op.node = inode
                 x = self.model.nodes.x[inode]
                 y = self.model.nodes.y[inode]
-                op.h_cost = cal_distance(
-                    self.start.x, self.start.y, x, y, self.model.dist_type)
+                op.h_cost = cal_distance(self.start.x, self.start.y, x, y, self.model.dist_type)
                 c = min(self.G[inode], self.RHS[inode])
                 op.key = [c+self.model.km+op.h_cost, c]
                 op.ind = self.open.count
                 self.open.list.append(op)
                 self.n_opened += 1
                 if flag_reopen:
-                    self.n_reopened +=1
+                    self.n_reopened += 1
 
     def update_map(self, t):
         for i, do_t in enumerate(self.model.dynamic_obsts.t):
@@ -168,9 +167,7 @@ class DStarLite:
 
                 xl = self.model.nodes.x[self.model.s_last]
                 yl = self.model.nodes.y[self.model.s_last]
-                self.model.km = self.model.km + \
-                    cal_distance(xl, yl, self.start.x,
-                                 self.start.y, self.model.dist_type)
+                self.model.km = self.model.km + cal_distance(xl, yl, self.start.x, self.start.y, self.model.dist_type)
                 self.model.s_last = self.start.node
                 update_list = self.model.predecessors[new_obst_node]
 

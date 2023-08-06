@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 from common.create_model_base import CreateBaseModel
 
 
@@ -50,21 +49,20 @@ class CreateDstarLiteModel(CreateBaseModel):
                     if (self.map.x_min <= newx <= self.map.x_max) and (self.map.y_min <= newy <= self.map.y_max):
                         new_node = inode+ix+iy*(self.map.nx)
 
+                        # check if it is obstacle
                         if not new_node in self.obsts.nodes:
-                            successors[inode] = np.append(
-                                successors[inode], new_node)
-                            predecessors[new_node] = np.append(
-                                predecessors[new_node], inode)
+                            successors[inode] = np.append(successors[inode], new_node)
+                            predecessors[new_node] = np.append(predecessors[new_node], inode)
 
+                            # edge cost
                             if ix != 0 and iy != 0:
                                 cost = edge_len
                             else:
                                 cost = 1
 
-                            succ_cost[inode] = np.append(
-                                succ_cost[inode], cost)
-                            pred_cost[new_node] = np.append(
-                                pred_cost[new_node], cost)
+                            # new successor
+                            succ_cost[inode] = np.append(succ_cost[inode], cost)
+                            pred_cost[new_node] = np.append(pred_cost[new_node], cost)
 
         self.successors = successors
         self.succ_cost = succ_cost

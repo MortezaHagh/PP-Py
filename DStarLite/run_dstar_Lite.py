@@ -21,6 +21,7 @@ model = CreateDstarLiteModel(setting, has_dynamic_obsts=True, use_rnd=False, map
 
 # dstar lite
 dsl_obj = DStarLite(model)
+# -----------------------------------
 
 # Evaluate
 eval = Evaluate(dsl_obj.sol)
