@@ -35,6 +35,9 @@ class EPEAStar:
         self.parents[top_node.node] = top_node.p_node
         # self.closed[top_node.node] = 1
 
+        # pre_process
+        self.pre_process()
+
         # plot
         if self.do_plot:
             plot_dyno = False  # False True
@@ -88,26 +91,39 @@ class EPEAStar:
     def expand(self):
         self.FN = np.inf
         feas_neighbors = []
-        neghbors = self.model.neighbors[self.top_node.node]
-        for neigh in neghbors:
-            if neigh.node == self.top_node.p_node:
+        node = self.top_node.node
+        succ_inds = self.succ_inds[node][:]
+
+        # 
+        if len(succ_inds)>0:
+            df = self.nodes_df[node].pop()
+            self.FN = self.top_node.f_cost + df
+        else:
+            return feas_neighbors
+        
+        #
+        for i in self.succ_inds[node]:
+            s = self.succs[node][i]
+            
+            # dont consider parent
+            if s.node == self.top_node.p_node:
+                succ_inds.remove(i)
                 continue
-            if (self.closed[neigh.node] == 0):
-                feas_neighb = TopNode()
-                feas_neighb.dir = neigh.dir
-                feas_neighb.node = neigh.node
-                feas_neighb.p_node = self.top_node.node
-                feas_neighb.dir_cost = int(not (self.top_node.dir - neigh.dir) == 0)*self.dir_coeff
-                feas_neighb.g_cost = self.top_node.g_cost + neigh.cost + feas_neighb.dir_cost
-                feas_neighb.h_cost = cal_distance(self.model.robot.xt, self.model.robot.yt, neigh.x, neigh.y, self.model.dist_type)
-                feas_neighb.f_cost = feas_neighb.g_cost + feas_neighb.h_cost*1
-                if round(feas_neighb.f_cost, 5) != round(self.top_node.f_cost, 5):
-                    if round(feas_neighb.f_cost, 5) > round(self.top_node.f_cost, 5):
-                        self.FN = min(self.FN, feas_neighb.f_cost)
-                else:
+            
+            # selected osf
+            if s.f_cost == df:
+                if (self.closed[s.node] == 0):
                     self.n_expanded += 1
-                    heappush(feas_neighbors, ((feas_neighb.f_cost, self.n_expanded), feas_neighb))
+                    s.g_cost += self.top_node.g_cost
+                    s.f_cost += self.top_node.f_cost 
+                    heappush(feas_neighbors, ((s.f_cost, self.n_expanded), s))
+                succ_inds.remove(i)
+        
+        #
+        self.succ_inds[node] = succ_inds
+
         return feas_neighbors
+
 
     def update_open(self, neighbors):
         if len(neighbors)==0:
@@ -133,7 +149,6 @@ class EPEAStar:
         else:
             self.n_opened += 1
             self.n_reopened += 1
-            # self.fcost[self.top_node.node] = self.FN
             self.top_node.f_cost = self.FN
             heappush(self.heap_open, ((self.top_node.f_cost, self.top_node.h_cost, self.n_opened), self.top_node))
 
@@ -155,9 +170,33 @@ class EPEAStar:
 
     # ------------------------------------------------------------
 
+    def pre_process(self):
+        #
+        self.succ_inds = [[i for i in range(len(neighs))] for neighs in self.model.neighbors]
+        self.succs = [[TopNode() for n in neighs] for neighs in self.model.neighbors]
+        self.nodes_df = [set() for n in range(self.model.nodes.count)]
+                        
+        for node in range(self.model.nodes.count):
+            x, y = self.model.nodes.x[node], self.model.nodes.y[node]
+            hn = cal_distance(self.model.robot.xt, self.model.robot.yt, x, y, self.model.dist_type)
+            dfn = []
+            for i, n in enumerate(self.model.neighbors[node]):
+                dg = n.cost
+                h = cal_distance(self.model.robot.xt, self.model.robot.yt, n.x, n.y, self.model.dist_type)
+                dh = hn - h
+                df = dg + dh
+                self.succs[node][i].p_node = node
+                self.succs[node][i].node = n.node
+                self.succs[node][i].g_cost = dg
+                self.succs[node][i].h_cost = h
+                self.succs[node][i].f_cost = df # round(dh, 5) 
+                dfn.append(df)
+            self.nodes_df[node] = list(set(dfn))
+
+    # ------------------------------------------------------------
+
     def create_top_node(self):
         top_node = TopNode()
-        top_node.ind = 0
         top_node.visited = True
         top_node.dir = self.model.robot.dir
         top_node.node = self.model.robot.start_node
