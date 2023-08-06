@@ -4,24 +4,28 @@ Single robot path planning algorithms implemented in Python. Including heuristic
 
 Incremental heuristic search methods are used for **dynamic path planning** with changes in the map (environment).
 
-<table style="padding:10px">
-  <tr>
-    <td><img src="./DStarLite/Results/sim-2.png" alt="1"></td>
-    <td><img src="./DStarLite/Results/sim-4.gif" alt="2"></td>
-  </tr>
-  <tr>
-    <td><img src="./DStarLite/Results/sim-5-dy.gif" alt="2"></td>
-  </tr>
-</table>
-
 ## Methods
 
-- A* (can turn into Dijkstra by changing the heuristic function)
+**heuristic search methods**
 
-**incremental heuristic searchs:**
+- A* (can turn into Dijkstra by changing the heuristic function)
+- PEA*:Partial Expansion A*
+- EPEA*:Enhanced Partial Expansion A*
+
+**incremental heuristic searchs method** (For dynamic environments and moving agents)
 
 - LPA*(Life Long Planning A*)
 - D*Lite
+
+## Simulations
+
+<table style="padding:10px">
+  <tr>
+    <td><img src="./AStar/Results/sim-1.png" alt="1"></td>
+    <td><img src="./DStarLite/Results/sim-4.gif" alt="2"></td>
+    <td><img src="./DStarLite/Results/sim-5-dy.gif" alt="3"></td>
+  </tr>
+</table>
 
 ## Run
 
@@ -60,5 +64,3 @@ to change the mode configurations (predefined arrangements), edit common/create_
 - python3
 - numpy
 - matplotlib
-
-## Simulations
