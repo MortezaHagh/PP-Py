@@ -8,7 +8,7 @@ from heapq import heappush, heappop
 from common.plotting import Plotter
 
 
-class AStar:
+class EPEAStar:
     def __init__(self, model):
 
         # settings
@@ -23,6 +23,7 @@ class AStar:
         self.n_final_open = 0
 
         # initialize
+        self.FN = np.inf
         self.model = model
         self.closed = Closed()
         top_node = self.create_top_node()
@@ -32,7 +33,10 @@ class AStar:
         self.fcost = [-1 for i in range(model.nodes.count)]
         self.fcost[top_node.node] = top_node.f_cost
         self.parents[top_node.node] = top_node.p_node
-        self.closed[top_node.node] = 1
+        # self.closed[top_node.node] = 1
+
+        # pre_process
+        self.pre_process()
 
         # plot
         if self.do_plot:
@@ -41,23 +45,23 @@ class AStar:
             self.plotter = Plotter(model, plot_dyno)
             self.plotter.update1(self.top_node.node)
 
-        self.heap_open = [((top_node.f_cost, -top_node.g_cost, self.n_opened), top_node)]
+        self.heap_open = [((top_node.f_cost, top_node.h_cost, self.n_opened), top_node)]
 
         # start process time
         self.end_time = 0
         start_time = time.process_time()
 
         # astar
-        self.astar()
+        self.epe_astar()
 
         # end process time
         self.sol.proc_time = self.end_time - start_time
 
     # ------------------------------------------------------------
 
-    def astar(self):
+    def epe_astar(self):
         while self.top_node.node != self.model.robot.goal_node:
-
+            
             # select new Top Node
             self.select_top_node()
 
@@ -67,7 +71,7 @@ class AStar:
             # update or extend Open list with the successor nodes
             self.update_open(feas_neighbors)
 
-            # plot
+             # plot
             if self.do_plot:
                 self.plotter.update2(self.top_node.node, self.o_nodes)
                 self.o_nodes = []
@@ -84,31 +88,47 @@ class AStar:
     # ------------------------------------------------------------
 
     def expand(self):
+        self.FN = np.inf
         feas_neighbors = []
-        neghbors = self.model.neighbors[self.top_node.node]
-        for neigh in neghbors:
-            if neigh.node == self.top_node.p_node:
+        node = self.top_node.node
+        succ_inds = self.succ_inds[node][:]
+
+        # 
+        if len(succ_inds)>0:
+            df = self.nodes_df[node].pop(0)
+            self.FN = self.top_node.f_cost + df
+        else:
+            return feas_neighbors
+        
+        #
+        for i in self.succ_inds[node]:
+            s = self.succs[node][i]
+            
+            # dont consider parent
+            if s.node == self.top_node.p_node:
+                succ_inds.remove(i)
                 continue
-            if (self.closed[neigh.node] == 0):
-                self.n_expanded += 1
-                feas_neighb = TopNode()
-                feas_neighb.dir = neigh.dir
-                feas_neighb.node = neigh.node
-                feas_neighb.p_node = self.top_node.node
-                feas_neighb.dir_cost = int(not (self.top_node.dir - neigh.dir) == 0)*self.dir_coeff
-                feas_neighb.g_cost = self.top_node.g_cost + neigh.cost + feas_neighb.dir_cost
-                feas_neighb.h_cost = cal_distance(self.model.robot.xt, self.model.robot.yt, neigh.x, neigh.y, self.model.dist_type)
-                feas_neighb.f_cost = feas_neighb.g_cost + feas_neighb.h_cost*1
-                feas_neighbors.append(feas_neighb)
+            
+            # selected osf
+            if s.f_cost == df:
+                if (self.closed[s.node] == 0):
+                    self.n_expanded += 1
+                    s.g_cost += self.top_node.g_cost
+                    s.f_cost += self.top_node.f_cost 
+                    heappush(feas_neighbors, ((s.f_cost, self.n_expanded), s))
+                succ_inds.remove(i)
+        
+        #
+        self.succ_inds[node] = succ_inds
+
         return feas_neighbors
 
 
     def update_open(self, neighbors):
-        if neighbors == []:
-            # print("empty neighbors!")
-            return
-
-        for neigh in neighbors:
+        if len(neighbors)==0:
+            self.closed[self.top_node.node] = 1
+        while len(neighbors) > 0:
+            c, neigh = heappop(neighbors)
             open_flag = False
             if self.fcost[neigh.node] > 0:
                 if neigh.f_cost < self.fcost[neigh.node]:
@@ -121,16 +141,25 @@ class AStar:
                 self.n_opened += 1
                 self.fcost[neigh.node] = neigh.f_cost
                 self.parents[neigh.node] = neigh.p_node
-                heappush(self.heap_open, ((neigh.f_cost, -neigh.g_cost, -self.n_opened), neigh))
-                
+                heappush(self.heap_open, ((neigh.f_cost, neigh.h_cost, -self.n_opened), neigh))
                 if self.do_plot:
                     self.o_nodes.append(neigh.node)
 
-
+        if self.FN is np.inf:
+            self.closed[self.top_node.node] = 1
+        else:
+            self.n_opened += 1
+            self.n_reopened += 1
+            self.top_node.f_cost = self.FN
+            heappush(self.heap_open, ((self.top_node.f_cost, self.top_node.h_cost, self.n_opened), self.top_node))
+            if self.do_plot:
+                    self.o_nodes.append(self.top_node.node)
+    
+    
     def select_top_node(self):
         c, top_node = heappop(self.heap_open)
         self.top_node = top_node
-        self.closed[top_node.node] = 1
+        # self.closed[top_node.node] = 1
 
     def optimal_path(self):
         path_nodes = [self.model.robot.goal_node]
@@ -145,6 +174,36 @@ class AStar:
 
     # ------------------------------------------------------------
 
+    def pre_process(self):
+        #
+        self.succ_inds = [[i for i in range(len(neighs))] for neighs in self.model.neighbors]
+        self.succs = [[TopNode() for n in neighs] for neighs in self.model.neighbors]
+        self.nodes_df = [set() for n in range(self.model.nodes.count)]
+                        
+        for node in range(self.model.nodes.count):
+            if node == self.model.robot.goal_node:
+                self.succ_inds[node] = []
+                self.nodes_df[node] = []
+                self.succs[node] = []
+                continue
+            x, y = self.model.nodes.x[node], self.model.nodes.y[node]
+            hn = cal_distance(self.model.robot.xt, self.model.robot.yt, x, y, self.model.dist_type)
+            dfn = []
+            for i, n in enumerate(self.model.neighbors[node]):
+                dg = n.cost
+                h = cal_distance(self.model.robot.xt, self.model.robot.yt, n.x, n.y, self.model.dist_type)
+                dh = h - hn
+                df = dg + dh
+                self.succs[node][i].p_node = node
+                self.succs[node][i].node = n.node
+                self.succs[node][i].g_cost = dg
+                self.succs[node][i].h_cost = h
+                self.succs[node][i].f_cost = round(df, 5) # round(df, 5)  df
+                dfn.append(round(df, 5))  # round(df, 5)  df
+            self.nodes_df[node] = list(set(sorted(dfn)))
+
+    # ------------------------------------------------------------
+
     def create_top_node(self):
         top_node = TopNode()
         top_node.visited = True
@@ -154,6 +213,7 @@ class AStar:
         h_cost = cal_distance(self.model.robot.xs, self.model.robot.ys,
                               self.model.robot.xt, self.model.robot.yt, self.model.dist_type)
         top_node.g_cost = 0
+        top_node.h_cost = h_cost
         top_node.f_cost = h_cost
         return top_node
 

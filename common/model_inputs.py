@@ -9,8 +9,8 @@ class ModelInputs():
             self.map_1()
         elif map_id == 2:
             self.map_2()
-        # elif map_id == 3:
-        #     self.map_3()
+        elif map_id == 3:
+            self.map_3()
 
     def map_1(self):
 
@@ -88,6 +88,27 @@ class ModelInputs():
         # obstacles
         self.x_obst = ox  # ox []
         self.y_obst = oy  # oy []
+
+        # robot
+        self.heading = 0
+        self.xs = 1
+        self.ys = 1
+        self.xt = 31
+        self.yt = 31
+
+    def map_3(self):
+
+        # area
+        lim = 32
+        self.lim = lim
+        self.x_min = 1
+        self.y_min = 1
+        self.x_max = lim
+        self.y_max = lim
+
+        # obstacles
+        self.x_obst = []
+        self.y_obst = []
 
         # robot
         self.heading = 0

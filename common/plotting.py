@@ -1,3 +1,4 @@
+import time
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import matplotlib.animation as animation
@@ -5,6 +6,7 @@ import matplotlib.animation as animation
 
 class Plotter:
     def __init__(self, model, plot_dyno=False) -> None:
+        # plt.ion()
         self.model = model
         self.plot_dyno = plot_dyno
         self.do_color = (0.8500, 0.3250, 0.0980)
@@ -14,6 +16,8 @@ class Plotter:
         self.ax.axis([model.map.x_min-1, model.map.x_max+1,
                       model.map.y_min-1, model.map.y_max+1])
         self.plot_model()
+
+    # --------------------------------------------------------------------
 
     def plot_model(self):
         # start
@@ -42,10 +46,14 @@ class Plotter:
                                  lx, ly, linewidth=2, edgecolor='k', facecolor='none')
         self.ax.add_patch(rect)
 
+    # --------------------------------------------------------------------
+
     def plot_solution(self, sol):
         self.ax.plot(sol.x, sol.y, 'b', linewidth=1)
         self.ax.plot(sol.x, sol.y, 'o', markersize=4,
                      markeredgecolor='b', markerfacecolor='b')
+
+    # --------------------------------------------------------------------
 
     def plot_anim(self, sol):
         self.sol = sol
@@ -85,3 +93,50 @@ class Plotter:
     def animate(self):
         self.anim = animation.FuncAnimation(
             self.fig, self.ani_update, init_func=self.ani_init, frames=self.path_len, repeat=False, interval=500, blit=True)
+
+     # --------------------------------------------------------------------
+
+    def update1(self, node):
+
+        #  top node coordinates
+        x = self.model.nodes.x[node]
+        y = self.model.nodes.y[node]
+
+        #  all open nodes
+        self.nos = set()
+        self.line3, = self.ax.plot(x, y, 'o', color=(1, 0, 1), markersize=4, label="all open nodes")
+
+        # topnode
+        self.line1, = self.ax.plot(x, y, 'o', color=(1, 0, 0), markersize=10, label="top node")
+
+        # recent open nodes
+        self.line2, = self.ax.plot(x, y, 'o', color=(0, 0, 1), markersize=8, label="latest open nodes")
+
+        #
+        plt.legend()
+
+    def update2(self, node, open_nodes):
+
+       # topnode
+        x = self.model.nodes.x[node]
+        y = self.model.nodes.y[node]
+        self.line1.set_xdata(x)
+        self.line1.set_ydata(y)
+
+        # recent open nodes
+        xx = [self.model.nodes.x[n] for n in open_nodes]
+        yy = [self.model.nodes.y[n] for n in open_nodes]
+        self.line2.set_xdata(xx)
+        self.line2.set_ydata(yy)
+
+        #  all open nodes
+        self.nos = set(open_nodes).union(self.nos)
+        self.xos = [self.model.nodes.x[n] for n in list(self.nos)]
+        self.yos = [self.model.nodes.y[n] for n in list(self.nos)]
+        self.line3.set_xdata(list(self.xos))
+        self.line3.set_ydata(list(self.yos))
+
+        # drawing updated values
+        self.fig.canvas.draw()
+        self.fig.canvas.flush_events()
+        time.sleep(0.4)
