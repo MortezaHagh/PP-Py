@@ -38,7 +38,8 @@ Incremental heuristic search methods are used for **dynamic path planning** with
 ## Common Directory
 
 Apart from each path planning method's directory, there is a common directory that includes common tools used in all path planning methods.
-Including:
+
+Includes:
 
 - create base model (map and configurations) for all methods
 - Final evaluation
