@@ -41,7 +41,6 @@ class PEAStar:
             self.plotter = Plotter(model, plot_dyno)
             self.plotter.update1(self.top_node.node)
 
-        self.heap_open = []
         self.heap_open = [((top_node.f_cost, top_node.h_cost, self.n_opened), top_node)]
 
         # start process time
