@@ -13,7 +13,7 @@ class AStar:
 
         # settings
         self.dir_coeff = 0.0
-        self.do_plot = False  # True False
+        self.do_plot = True  # True False
 
         # stats
         self.n_closed = 0
@@ -102,6 +102,7 @@ class AStar:
                 feas_neighbors.append(feas_neighb)
         return feas_neighbors
 
+
     def update_open(self, neighbors):
         if neighbors == []:
             # print("empty neighbors!")
@@ -124,6 +125,7 @@ class AStar:
                 
                 if self.do_plot:
                     self.o_nodes.append(neigh.node)
+
 
     def select_top_node(self):
         c, top_node = heappop(self.heap_open)

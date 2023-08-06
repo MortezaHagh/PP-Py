@@ -13,7 +13,7 @@ class PEAStar:
 
         # settings
         self.dir_coeff = 0.0
-        self.do_plot = False  # True False
+        self.do_plot = True  # True False
 
         # stats
         self.n_closed = 0
@@ -37,6 +37,7 @@ class PEAStar:
 
         # plot
         if self.do_plot:
+            self.o_nodes = []
             plot_dyno = False  # False True
             self.plotter = Plotter(model, plot_dyno)
             self.plotter.update1(self.top_node.node)
@@ -67,11 +68,10 @@ class PEAStar:
             # update or extend Open list with the successor nodes
             self.update_open(feas_neighbors)
 
-             # plot
+            # plot
             if self.do_plot:
-                o_nodes = [o[1].node for o in self.heap_open]
-                self.plotter.update2(self.top_node.node, o_nodes)
-
+                self.plotter.update2(self.top_node.node, self.o_nodes)
+                self.o_nodes = []
 
         # optimal paths
         self.path_nodes = self.optimal_path()
@@ -127,6 +127,8 @@ class PEAStar:
                 self.fcost[neigh.node] = neigh.f_cost
                 self.parents[neigh.node] = neigh.p_node
                 heappush(self.heap_open, ((neigh.f_cost, neigh.h_cost, -self.n_opened), neigh))
+                if self.do_plot:
+                    self.o_nodes.append(neigh.node)
 
         if self.FN is np.inf:
             self.closed[self.top_node.node] = 1
@@ -136,11 +138,15 @@ class PEAStar:
             # self.fcost[self.top_node.node] = self.FN
             self.top_node.f_cost = self.FN
             heappush(self.heap_open, ((self.top_node.f_cost, self.top_node.h_cost, self.n_opened), self.top_node))
+            if self.do_plot:
+                    self.o_nodes.append(self.top_node.node)
+
 
     def select_top_node(self):
         c, top_node = heappop(self.heap_open)
         self.top_node = top_node
         # self.closed[top_node.node] = 1
+
 
     def optimal_path(self):
         path_nodes = [self.model.robot.goal_node]
