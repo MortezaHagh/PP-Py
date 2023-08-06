@@ -13,7 +13,7 @@ class EPEAStar:
 
         # settings
         self.dir_coeff = 0.0
-        self.do_plot = True  # True False
+        self.do_plot = False  # True False
 
         # stats
         self.n_closed = 0
