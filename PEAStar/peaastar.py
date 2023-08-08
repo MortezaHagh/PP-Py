@@ -1,6 +1,6 @@
 import time
 import numpy as np
-from support import Open, Sol
+from support import Sol
 from support import Closed, TopNode
 from heapq import heappush, heappop
 from common.plotting import Plotter
@@ -13,6 +13,7 @@ class PEAStar:
 
         # settings
         self.dir_coeff = 0.0
+        self.from_start = True
         self.do_plot = False  # True False
 
         # stats
@@ -23,6 +24,12 @@ class PEAStar:
         self.n_final_open = 0
 
         # initialize
+        if self.from_start:
+            self.start = model.start
+            self.goal = model.goal
+        else:
+            self.goal = model.start
+            self.start = model.goal
         self.FN = np.inf
         self.model = model
         self.closed = Closed()
@@ -57,7 +64,7 @@ class PEAStar:
     # ------------------------------------------------------------
 
     def pe_astar(self):
-        while self.top_node.node != self.model.robot.goal_node:
+        while self.top_node.node != self.goal.node:
 
             # select new Top Node
             self.select_top_node()
@@ -102,7 +109,7 @@ class PEAStar:
                 feas_neighb.p_node = self.top_node.node
                 feas_neighb.dir_cost = int(not (self.top_node.dir - neigh.dir) == 0)*self.dir_coeff
                 feas_neighb.g_cost = self.top_node.g_cost + neigh.cost + feas_neighb.dir_cost
-                feas_neighb.h_cost = cal_distance(self.model.robot.xt, self.model.robot.yt, neigh.x, neigh.y, self.model.dist_type)
+                feas_neighb.h_cost = cal_distance(self.goal.x, self.goal.y, neigh.x, neigh.y, self.model.dist_type)
                 feas_neighb.f_cost = feas_neighb.g_cost + feas_neighb.h_cost*1
                 # expand successors with f_cost equal to parent's f_cost
                 if round(feas_neighb.f_cost, 5) != round(self.top_node.f_cost, 5):
@@ -152,14 +159,15 @@ class PEAStar:
         self.top_node = top_node
 
     def optimal_path(self):
-        path_nodes = [self.model.robot.goal_node]
+        path_nodes = [self.goal.node]
         parent_node = self.top_node.p_node
-        while parent_node != self.model.robot.start_node:
+        while parent_node != self.start.node:
             path_nodes.append(parent_node)
             parent_node = self.parents[parent_node]
 
-        path_nodes.append(self.model.robot.start_node)
-        path_nodes.reverse()
+        path_nodes.append(self.start.node)
+        if self.from_start:
+            path_nodes.reverse()
         return path_nodes
 
     # ------------------------------------------------------------
@@ -167,11 +175,10 @@ class PEAStar:
     def create_top_node(self):
         top_node = TopNode()
         top_node.visited = True
-        top_node.dir = self.model.robot.dir
-        top_node.node = self.model.robot.start_node
-        top_node.p_node = self.model.robot.start_node
-        h_cost = cal_distance(self.model.robot.xs, self.model.robot.ys,
-                              self.model.robot.xt, self.model.robot.yt, self.model.dist_type)
+        top_node.dir = self.start.dir
+        top_node.node = self.start.node
+        top_node.p_node = self.start.node
+        h_cost = cal_distance(self.start.x, self.start.y, self.goal.x, self.goal.y, self.model.dist_type)
         top_node.g_cost = 0
         top_node.h_cost = h_cost
         top_node.f_cost = h_cost
