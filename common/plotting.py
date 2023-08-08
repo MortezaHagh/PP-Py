@@ -45,13 +45,13 @@ class Plotter:
         rect = patches.Rectangle((self.model.map.x_min-0.5, self.model.map.y_min-0.5),
                                  lx, ly, linewidth=2, edgecolor='k', facecolor='none')
         self.ax.add_patch(rect)
+        self.ax.legend(loc="upper right")
 
     # --------------------------------------------------------------------
 
     def plot_solution(self, sol):
         self.ax.plot(sol.x, sol.y, 'b', linewidth=1)
-        self.ax.plot(sol.x, sol.y, 'o', markersize=4,
-                     markeredgecolor='b', markerfacecolor='b')
+        self.ax.plot(sol.x, sol.y, 'o', markersize=4, markeredgecolor='b', markerfacecolor='b')
 
     # --------------------------------------------------------------------
 
@@ -62,10 +62,8 @@ class Plotter:
         line = [0, 0, 0]
         line[0], = self.ax.plot(
             sol.x[0], sol.y[0], 'o', markerfacecolor='green', markeredgecolor='green', markersize=5)
-        line[1], = self.ax.plot(sol.x[0:2], sol.y[0:2],
-                                color='green', linewidth=2)
-        line[2], = self.ax.plot(-1, -1, 'o', markeredgecolor=self.do_color,
-                                markerfacecolor=self.do_color)
+        line[1], = self.ax.plot(sol.x[0:2], sol.y[0:2], color='green', linewidth=2)
+        line[2], = self.ax.plot(-1, -1, 'o', markeredgecolor=self.do_color, markerfacecolor=self.do_color)
         self.line = line
         self.animate()
 
