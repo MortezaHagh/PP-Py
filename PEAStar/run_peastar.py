@@ -55,7 +55,7 @@ if not do_animate:
     name = name + '.png'
     pic_name = os.path.join(script_directory, 'Results/'+name) 
     plotter.plot_solution(pp_obj.sol)
-    plotter.fig.savefig(pic_name)
+    # plotter.fig.savefig(pic_name)
 else:
     name = name + '.gif'
     pic_name = os.path.join(script_directory, 'Results/'+name) 
