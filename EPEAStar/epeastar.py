@@ -186,9 +186,10 @@ class EPEAStar:
                 self.nodes_df[node] = []
                 self.succs[node] = []
                 continue
+
+            dfn = []
             x, y = self.model.nodes.x[node], self.model.nodes.y[node]
             hn = cal_distance(self.model.robot.xt, self.model.robot.yt, x, y, self.model.dist_type)
-            dfn = []
             for i, n in enumerate(self.model.neighbors[node]):
                 dg = n.cost
                 h = cal_distance(self.model.robot.xt, self.model.robot.yt, n.x, n.y, self.model.dist_type)

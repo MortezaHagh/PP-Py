@@ -116,6 +116,7 @@ class PEAStar:
     def update_open(self, neighbors):
         if len(neighbors) == 0:
             self.closed[self.top_node.node] = 1
+
         while len(neighbors) > 0:
             c, neigh = heappop(neighbors)
             open_flag = False
