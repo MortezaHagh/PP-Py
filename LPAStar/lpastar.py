@@ -121,8 +121,7 @@ class LPAStar:
                 op.node = inode
                 x = self.model.nodes.x[inode]
                 y = self.model.nodes.y[inode]
-                h_cost = cal_distance(
-                    self.model.robot.xt, self.model.robot.yt, x, y, self.model.dist_type)
+                h_cost = cal_distance(self.model.robot.xt, self.model.robot.yt, x, y, self.model.dist_type)
                 c = min(self.G[inode], self.RHS[inode])
                 op.key = [c + h_cost, c]
                 op.ind = self.open.count
@@ -200,8 +199,7 @@ class LPAStar:
             dy = self.model.nodes.y[i]-y
             dx = self.model.nodes.x[i]-x
             theta = np.arctan2(dy, dx)
-            dt = np.arctan2(np.sin(theta-current_dir),
-                            np.cos(theta-current_dir))
+            dt = np.arctan2(np.sin(theta-current_dir), np.cos(theta-current_dir))
             dtheta.append(dt)
         return dtheta
 
