@@ -1,6 +1,14 @@
 from common.model_inputs import ModelInputs
 
 
+class StartGoal:
+    def __init__(self, x, y, node, dir):
+        self.x = x
+        self.y = y
+        self.dir = dir
+        self.node = node
+
+
 class Map(object):
     def __init__(self, inputs):
         self.lim = inputs.lim
@@ -72,10 +80,15 @@ class CreateBaseModel(object):
         self.nodes = Nodes(map)
 
         # Robot
-        self.robot = Robot(map, inp)
+        robot = Robot(map, inp)
+        self.robot = robot
 
         # Obstacles
         self.obsts = Obstacles(map, inp)
 
         # Dynamic Obstacles
         self.dynamic_obsts = DynamicObsts(map, has_dynamic_obsts)
+
+        # start - goal
+        self.start = StartGoal(robot.xs, robot.ys, robot.start_node, robot.dir)
+        self.goal = StartGoal(robot.xt, robot.yt, robot.goal_node, robot.dir)
