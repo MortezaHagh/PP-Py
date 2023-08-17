@@ -70,6 +70,14 @@
 <span></span><span class="kn">from</span> <span class="nn">common.model_inputs</span> <span class="kn">import</span> <span class="n">ModelInputs</span>
 
 
+<div class="viewcode-block" id="StartGoal"><a class="viewcode-back" href="../../PathPlanning.common.html#common.create_model_base.StartGoal">[docs]</a><span class="k">class</span> <span class="nc">StartGoal</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="nb">dir</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dir</span> <span class="o">=</span> <span class="nb">dir</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">node</span> <span class="o">=</span> <span class="n">node</span></div>
+
+
 <div class="viewcode-block" id="Map"><a class="viewcode-back" href="../../PathPlanning.common.html#common.create_model_base.Map">[docs]</a><span class="k">class</span> <span class="nc">Map</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lim</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">lim</span>
@@ -141,13 +149,18 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="n">Nodes</span><span class="p">(</span><span class="nb">map</span><span class="p">)</span>
 
         <span class="c1"># Robot</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">robot</span> <span class="o">=</span> <span class="n">Robot</span><span class="p">(</span><span class="nb">map</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span>
+        <span class="n">robot</span> <span class="o">=</span> <span class="n">Robot</span><span class="p">(</span><span class="nb">map</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">robot</span> <span class="o">=</span> <span class="n">robot</span>
 
         <span class="c1"># Obstacles</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">obsts</span> <span class="o">=</span> <span class="n">Obstacles</span><span class="p">(</span><span class="nb">map</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span>
 
         <span class="c1"># Dynamic Obstacles</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_obsts</span> <span class="o">=</span> <span class="n">DynamicObsts</span><span class="p">(</span><span class="nb">map</span><span class="p">,</span> <span class="n">has_dynamic_obsts</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_obsts</span> <span class="o">=</span> <span class="n">DynamicObsts</span><span class="p">(</span><span class="nb">map</span><span class="p">,</span> <span class="n">has_dynamic_obsts</span><span class="p">)</span>
+
+        <span class="c1"># start - goal</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">StartGoal</span><span class="p">(</span><span class="n">robot</span><span class="o">.</span><span class="n">xs</span><span class="p">,</span> <span class="n">robot</span><span class="o">.</span><span class="n">ys</span><span class="p">,</span> <span class="n">robot</span><span class="o">.</span><span class="n">start_node</span><span class="p">,</span> <span class="n">robot</span><span class="o">.</span><span class="n">dir</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">goal</span> <span class="o">=</span> <span class="n">StartGoal</span><span class="p">(</span><span class="n">robot</span><span class="o">.</span><span class="n">xt</span><span class="p">,</span> <span class="n">robot</span><span class="o">.</span><span class="n">yt</span><span class="p">,</span> <span class="n">robot</span><span class="o">.</span><span class="n">goal_node</span><span class="p">,</span> <span class="n">robot</span><span class="o">.</span><span class="n">dir</span><span class="p">)</span></div>
 </pre></div>
 
            </div>

@@ -6,6 +6,9 @@ from common.cal_distance import cal_distance
 
 
 class DStarLite:
+    """D* Lite Class
+    """
+
     def __init__(self, model):
 
         # stats
@@ -231,7 +234,15 @@ class DStarLite:
         sol.dirs = self.node_to_dir(self.path_nodes)
         self.sol = sol
 
-    def node_to_dir(self, nodes):
+    def node_to_dir(self, nodes): 
+        """creates final dir (heading) list from nodes list
+
+        Args:
+            nodes (custom): list of node numbers of final path
+
+        Returns:
+            list[double]: final heading list
+        """
         dirs = []
         for i in range(1, len(nodes)):
             x1 = self.model.nodes.x[nodes[i-1]]
