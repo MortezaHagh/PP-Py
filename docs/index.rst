@@ -7,7 +7,7 @@ Welcome to PathPlanning's documentation!
 ================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
    PathPlanning
@@ -19,4 +19,4 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
-Authoe: Morteza Haghbeigi
+Author: Morteza Haghbeigi
