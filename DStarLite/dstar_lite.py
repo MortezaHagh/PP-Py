@@ -7,9 +7,15 @@ from common.cal_distance import cal_distance
 
 class DStarLite:
     """D* Lite Class
+    
+    :param model: problem model object
+    :type model: create_dstarlite_model.CreateDstarLiteModel
+
     """
 
     def __init__(self, model):
+        """Constructor method
+        """
 
         # stats
         self.n_opened = 0
