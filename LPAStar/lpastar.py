@@ -1,14 +1,14 @@
 import time
 import numpy as np
-from support import TopNode
-from support import Open, Sol
 from common.cal_distance import cal_distance
+from LPAStar.support import Open, Sol, TopNode
 
 
 class LPAStar:
     def __init__(self, model):
 
         # stats
+        self.n_closed = 0
         self.n_opened = 0
         self.n_reopened = 0
         self.n_expanded = 0
@@ -60,6 +60,7 @@ class LPAStar:
 
         self.end_time = time.process_time()
         self.create_sol()
+        self.n_final_open = len(self.open.list)
 
     # ------------------------------------------------------------
 

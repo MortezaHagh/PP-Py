@@ -1,7 +1,7 @@
 import time
 import numpy as np
-from support import Open, Sol
-from support import Start, TopNode
+from DStarLite.support import Open, Sol
+from DStarLite.support import Start, TopNode
 from common.cal_distance import cal_distance
 
 
@@ -18,6 +18,7 @@ class DStarLite:
         """
 
         # stats
+        self.n_closed = 0
         self.n_opened = 0
         self.n_reopened = 0
         self.n_expanded = 0
@@ -88,6 +89,7 @@ class DStarLite:
 
         self.end_time = time.process_time()
         self.create_sol()
+        self.n_final_open = len(self.open.list)
 
     # ------------------------------------------------------------
 

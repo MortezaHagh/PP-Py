@@ -3,11 +3,18 @@ from common.angle_diff import angle_diff
 
 
 class Evaluate:
-    def __init__(self, sol):
-        self.sol = sol
+    def __init__(self, pp_obj):
+        self.sol = pp_obj.sol
         self.path_length = round(self.cal_cost(), 2)
         self.smoothness = round(self.cal_smoothness(), 2)
         self.path_turns = round(self.smoothness/(np.pi/2), 2)
+
+        # statistics
+        self.n_closed = pp_obj.n_closed
+        self.n_opened = pp_obj.n_opened
+        self.n_expanded = pp_obj.n_expanded
+        self.n_reopened = pp_obj.n_reopened
+        self.n_final_open = pp_obj.n_final_open
 
     def cal_cost(self):
         dxPath = np.diff(self.sol.x)

@@ -1,11 +1,9 @@
 import time
 import numpy as np
-from support import Sol
-from support import Closed, TopNode
 from heapq import heappush, heappop
 from common.plotting import Plotter
-from common.angle_diff import angle_diff
 from common.cal_distance import cal_distance
+from EPEAStar.support import Closed, TopNode, Sol
 
 
 class EPEAStar:

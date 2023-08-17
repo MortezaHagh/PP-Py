@@ -1,5 +1,5 @@
 import numpy as np
-from support import Neighbor
+from EPEAStar.support import Neighbor
 from common.create_model_base import CreateBaseModel
 
 

@@ -4,10 +4,10 @@ script_directory = os.path.dirname(os.path.abspath(sys.argv[0]))
 sys.path.append(os.path.join(script_directory, '..'))
 
 import matplotlib.pyplot as plt
-from dstar_lite import DStarLite
 from common.plotting import Plotter
 from common.evaluate import Evaluate
-from create_dstarlite_model import CreateDstarLiteModel
+from DStarLite.dstar_lite import DStarLite
+from DStarLite.create_dstarlite_model import CreateDstarLiteModel
 
 # adj_type: 4adj or 8adj
 # expand_method: random or heading
@@ -21,27 +21,27 @@ model = CreateDstarLiteModel(setting, has_dynamic_obsts=True, use_rnd=False, map
 
 
 # dstar lite
-dsl_obj = DStarLite(model)
+pp_obj = DStarLite(model)
 # -----------------------------------
 
 
 # Evaluate
-eval = Evaluate(dsl_obj.sol)
-dsl_obj.sol.proc_time = round(dsl_obj.sol.proc_time, 3)
+eval = Evaluate(pp_obj)
+pp_obj.sol.proc_time = round(pp_obj.sol.proc_time, 3)
 
 # results
 print(' ----------- results ------------')
-print('nodes:', dsl_obj.sol.nodes)
-print('dirs:', dsl_obj.sol.dirs)
-print('time:', dsl_obj.sol.proc_time)
+print('nodes:', pp_obj.sol.nodes)
+print('dirs:', pp_obj.sol.dirs)
+print('time:', pp_obj.sol.proc_time)
 print('length:', eval.path_length)
 print('turns:', eval.path_turns)
 print('smoothness:', eval.smoothness)
 print(' ---------- statistics ---------')
-print('n_expanded:', dsl_obj.n_expanded)
-print('n_opened:', dsl_obj.n_opened)
-print('n_reopened:', dsl_obj.n_reopened)
-print('n_final_open:', dsl_obj.open.count)
+print('n_expanded:', eval.n_expanded)
+print('n_opened:', eval.n_opened)
+print('n_reopened:', eval.n_reopened)
+print('n_final_open:', eval.n_final_open)
 
 
 # plot
@@ -52,13 +52,13 @@ if not do_animate:
     plotter = Plotter(model, plot_dyno)
     name = name + '.png'
     pic_name = os.path.join(script_directory, 'Results/'+name) 
-    plotter.plot_solution(dsl_obj.sol)
-    plotter.fig.savefig(pic_name)
+    plotter.plot_solution(pp_obj.sol)
+    # plotter.fig.savefig(pic_name)
 else:
     plot_dyno = False
     plotter = Plotter(model, plot_dyno)
     name = name + '.gif'
     pic_name = os.path.join(script_directory, 'Results/'+name) 
-    plotter.plot_anim(dsl_obj.sol)
+    plotter.plot_anim(pp_obj.sol)
     plotter.anim.save(pic_name, fps=4)
 plt.show()

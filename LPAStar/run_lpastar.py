@@ -4,10 +4,10 @@ script_directory = os.path.dirname(os.path.abspath(sys.argv[0]))
 sys.path.append(os.path.join(script_directory, '..'))
 
 import matplotlib.pyplot as plt
-from lpastar import LPAStar
 from common.plotting import Plotter
 from common.evaluate import Evaluate
-from create_lpastar_model import CreateLPAStarModel
+from LPAStar.lpastar import LPAStar
+from LPAStar.create_lpastar_model import CreateLPAStarModel
 
 # adj_type: 4adj or 8adj
 # expand_method: random or heading
@@ -26,7 +26,7 @@ lpas_obj = LPAStar(model)
 
 
 # Evaluate
-eval = Evaluate(lpas_obj.sol)
+eval = Evaluate(lpas_obj)
 lpas_obj.sol.proc_time = round(lpas_obj.sol.proc_time, 3)
 
 # results
@@ -38,10 +38,10 @@ print('length:', eval.path_length)
 print('turns:', eval.path_turns)
 print('smoothness:', eval.smoothness)
 print(' ---------- statistics ---------')
-print('n_expanded:', lpas_obj.n_expanded)
-print('n_opened:', lpas_obj.n_opened)
-print('n_reopened:', lpas_obj.n_reopened)
-print('n_final_open:', lpas_obj.open.count)
+print('n_expanded:', eval.n_expanded)
+print('n_opened:', eval.n_opened)
+print('n_reopened:', eval.n_reopened)
+print('n_final_open:', eval.n_final_open)
 
 
 # plot
@@ -53,7 +53,7 @@ if not do_animate:
     name = name + '.png'
     pic_name = os.path.join(script_directory, 'Results/'+name) 
     plotter.plot_solution(lpas_obj.sol)
-    plotter.fig.savefig(pic_name)
+    # plotter.fig.savefig(pic_name)
 else:
     plot_dyno = False
     plotter = Plotter(model, plot_dyno)

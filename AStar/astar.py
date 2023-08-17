@@ -1,7 +1,7 @@
 import time
 import numpy as np
-from support import Open, Sol
-from support import Closed, TopNode
+from AStar.support import Open, Sol
+from AStar.support import Closed, TopNode
 from common.angle_diff import angle_diff
 from common.cal_distance import cal_distance
 

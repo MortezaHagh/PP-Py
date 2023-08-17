@@ -4,11 +4,11 @@ script_directory = os.path.dirname(os.path.abspath(sys.argv[0]))
 sys.path.append(os.path.join(script_directory, '..'))
 
 # peastar - peaastar_heap
-from peaastar import PEAStar
 import matplotlib.pyplot as plt
 from common.plotting import Plotter
 from common.evaluate import Evaluate
-from create_astar_model import CreateAStarModel
+from PEAStar.peaastar import PEAStar
+from PEAStar.create_astar_model import CreateAStarModel
 
 # adj_type: 4adj or 8adj
 # expand_method: random or heading
@@ -27,7 +27,7 @@ pp_obj = PEAStar(model)
 
 
 # Evaluate
-eval = Evaluate(pp_obj.sol)
+eval = Evaluate(pp_obj)
 pp_obj.sol.proc_time = round(pp_obj.sol.proc_time, 4)
 
 # results
@@ -39,11 +39,11 @@ print('length:', eval.path_length)
 print('turns:', eval.path_turns)
 print('smoothness:', eval.smoothness)
 print(' ---------- statistics ---------')
-print('n_expanded:', pp_obj.n_expanded)
-print('n_opened:', pp_obj.n_opened)
-print('n_reopened:', pp_obj.n_reopened)
-print('n_final_open:', pp_obj.n_final_open)
-print('n_closed:', pp_obj.n_closed)
+print('n_expanded:', eval.n_expanded)
+print('n_opened:', eval.n_opened)
+print('n_reopened:', eval.n_reopened)
+print('n_final_open:', eval.n_final_open)
+print('n_closed:', eval.n_closed)
 
 
 # plot
