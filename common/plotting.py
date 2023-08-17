@@ -5,7 +5,7 @@ import matplotlib.animation as animation
 
 
 class Plotter:
-    def __init__(self, model, plot_dyno=False) -> None:
+    def __init__(self, model, plot_dyno=False):
         # plt.ion()
         self.model = model
         self.plot_dyno = plot_dyno
