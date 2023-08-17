@@ -11,7 +11,7 @@
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-
+#
 import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))
@@ -19,10 +19,9 @@ sys.path.insert(0, os.path.abspath('..'))
 
 # -- Project information -----------------------------------------------------
 
-
 project = u'PathPlanning'
-copyright = u'2023, Morteza Haghbeigi'
-author = u'Morteza Haghbeigi'
+copyright = u'2023, Morteza'
+author = u'Morteza'
 
 # The short X.Y version
 version = u''
@@ -130,7 +129,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'PathPlanning.tex', u'PathPlanning Documentation',
-     u'Morteza Haghbeigi', 'manual'),
+     u'Morteza', 'manual'),
 ]
 
 

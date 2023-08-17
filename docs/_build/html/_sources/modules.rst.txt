@@ -1,7 +1,7 @@
-PathPlanning
-============
+PathPlanningPy
+==============
 
 .. toctree::
    :maxdepth: 4
 
-   PathPlanning
+   PathPlanningPy
