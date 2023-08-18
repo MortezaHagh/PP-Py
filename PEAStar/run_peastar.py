@@ -7,7 +7,7 @@ sys.path.append(os.path.join(script_directory, '..'))
 import matplotlib.pyplot as plt
 from common.plotting import Plotter
 from common.evaluate import Evaluate
-from PEAStar.peaastar import PEAStar
+from PEAStar.peastar import PEAStar
 from PEAStar.create_astar_model import CreateAStarModel
 
 # adj_type: 4adj or 8adj
