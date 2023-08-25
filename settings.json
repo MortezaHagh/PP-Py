@@ -1,0 +1,15 @@
+{
+    "setting_result": {
+        "method": "Astar",
+        "map_id": 1,
+        "do_plot": true,
+        "do_save": true,
+        "plot_dyno": false,
+        "plot_anim": false
+    },
+    "setting_model": {
+        "adj_type": "4adj",
+        "dist_type": "manhattan",
+        "expand_method": "random"
+    }
+}

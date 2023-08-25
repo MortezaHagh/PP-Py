@@ -156,6 +156,7 @@ class PEAStar:
     def select_top_node(self):
         c, top_node = heappop(self.heap_open)
         self.top_node = top_node
+        # todo: closed
 
     def optimal_path(self):
         path_nodes = [self.goal.node]
