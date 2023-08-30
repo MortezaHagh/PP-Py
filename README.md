@@ -21,9 +21,9 @@ Incremental heuristic search methods are used for **dynamic path planning** with
 
 <table style="padding:10px">
   <tr>
-    <td><img src="./AStar/Results/sim-1.png" alt="1"></td>
-    <td><img src="./DStarLite/Results/sim-4.gif" alt="2"></td>
-    <td><img src="./DStarLite/Results/sim-5-dy.gif" alt="3"></td>
+    <td><img src="./zResults/sim-1.png" alt="1"></td>
+    <td><img src="./zResults/sim-2.gif" alt="2"></td>
+    <td><img src="./zResults/sim-3-DstarLite.gif" alt="3"></td>
   </tr>
 </table>
 
