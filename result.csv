@@ -1,6 +1,0 @@
-method,max_steps,path_length,smoothness,path_turns,proc_time,n_expanded,n_opened,n_reopened,n_final_open
-Astar,13,12.0,1.57,1.0,0.0002,40,39,0,27
-PEAStar,13,12.0,1.57,1.0,0.0003,40,31,13,19
-EPEAStar,13,12.0,1.57,1.0,0.0001,18,30,12,18
-LPAStar,13,12.0,4.71,3.0,0.004,147,84,18,24
-DStarLite,13,12.0,4.71,3.0,0.004,166,91,28,16

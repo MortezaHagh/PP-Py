@@ -8,32 +8,29 @@ sys.path.append(os.path.join(script_directory, '..'))
 # astar - astar_heap
 from AStar.astar_heap import AStar
 from common.evaluate import Evaluate
-from common.result import save_plot_result
+from common.save_plot_result import save_plot_result
+from common.update_settings import update_settings
 from AStar.create_astar_model import CreateAStarModel
 
-# # settings ---------------------------------------------
-setting_path = "/home/piotr/dev/MRPP/PathPlanningPy/settings.json"
-with open(setting_path, 'r') as f:
-    settings = json.load(f)
+# setting
+auto = True
+just_one = True
+setting_pp, setting_model = update_settings(just_one, auto, "Astar", 0)
 
-setting_result = settings["setting_result"]
-setting_model = settings["setting_model"]
-setting_result["method"] = "Astar"
-
-# ---------------------------------------------------------
+# ----------------------------------------------------------
 
 # model
-model = CreateAStarModel(setting_model, has_dynamic_obsts=False, use_rnd=False, map_id=setting_result["map_id"])
+model = CreateAStarModel(setting_model, has_dynamic_obsts=False, use_rnd=False, map_id=setting_pp["map_id"])
 
 
-# A* --------------------------------
+# PP
 pp_obj = AStar(model)
-# -----------------------------------
 
+# ----------------------------------------------------------
 
 # Evaluate
 pp_obj.sol.proc_time = round(pp_obj.sol.proc_time, 4)
-eval = Evaluate(pp_obj, setting_result["method"])
+eval = Evaluate(pp_obj, setting_pp)
 
 # results - save and plot
-save_plot_result(model, pp_obj, eval, setting_result)
+save_plot_result(model, pp_obj, eval, setting_pp)

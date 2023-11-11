@@ -1,0 +1,19 @@
+{
+    "setting_pp": {
+        "method_name": "Astar",
+        "method_id": 0,
+        "map_id": 1,
+        "do_print": true,
+        "do_plot": false,
+        "do_save": true,
+        "plot_dyno": false,
+        "plot_anim": false,
+        "save_path": "/home/piotr/dev/MRPP/PathPlanningPy/zResults/Auto",
+        "save_name": ""
+    },
+    "setting_model": {
+        "adj_type": "4adj",
+        "dist_type": "manhattan",
+        "expand_method": "random"
+    }
+}
